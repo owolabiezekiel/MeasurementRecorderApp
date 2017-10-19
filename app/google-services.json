@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "971377883712",
+    "firebase_url": "https://measurementrecorder.firebaseio.com",
+    "project_id": "measurementrecorder",
+    "storage_bucket": "measurementrecorder.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:971377883712:android:af14ac91e7fc9a9b",
+        "android_client_info": {
+          "package_name": "owolabi.tobiloba.measurementrecorder"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "971377883712-vbuac7bumb5nj651bmtm3h0tsp5mo5dt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "owolabi.tobiloba.measurementrecorder",
+            "certificate_hash": "354fd4944d5aaa0884d8854c85efa3eeb03912b8"
+          }
+        },
+        {
+          "client_id": "971377883712-pmeq0b2nqg4ttop6205iouljfmghorac.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCqas5bAG-tZFjK8kR2clbeW9iFh3PAAMo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "971377883712-pmeq0b2nqg4ttop6205iouljfmghorac.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

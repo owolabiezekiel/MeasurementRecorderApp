@@ -1,0 +1,159 @@
+<resources>
+    <string name="app_name">Measurement App</string>
+
+    <!-- Title for the activity to add a new measurement [CHAR LIMIT=20] -->
+    <string name="editor_activity_title_new_measurement">Add a Measurement</string>
+
+    <!-- Label for dropdown menu option if the client's gender is unknown [CHAR LIMIT=20] -->
+    <string name="gender_unknown">Unknown</string>
+
+    <!-- Label for dropdown menu option if the client is male [CHAR LIMIT=20] -->
+    <string name="gender_male">Male</string>
+
+    <!-- Label for dropdown menu option if the client is female [CHAR LIMIT=20] -->
+    <string name="gender_female">Female</string>
+
+    <!-- Label for overflow menu option that deletes all measurement data in the app [CHAR LIMIT=30] -->
+    <string name="action_delete_all_entries">Delete All Records</string>
+
+    <!-- Label for editor menu option to save measurement and leave editor [CHAR LIMIT=20] -->
+    <string name="action_save">Save</string>
+
+    <!-- Label for editor overflow menu option that deletes the current measurement [CHAR LIMIT=20] -->
+    <string name="action_delete">Delete</string>
+
+    <!-- Title text for the empty view, which describes the empty dog house image [CHAR LIMIT=50] -->
+    <string name="empty_view_title_text">It\'s a bit dry here..</string>
+
+    <!-- Subtitle text for the empty view that prompts the user to add a pet [CHAR LIMIT=50] -->
+    <string name="empty_view_subtitle_text">Get started by adding a measurement</string>
+
+    <!-- Label for unknown title [CHAR LIMIT=40] -->
+    <string name="unknown_title">Chief/Dr/Mr/Mrs/Miss/Madam</string>
+
+    <!-- Dialog message to ask the user to confirm deleting all measurement records [CHAR LIMIT=NONE] -->
+    <string name="delete_all_records_dialog_msg">Are You Sure You Want To Delete All Measurement record?</string>
+
+    <!-- Dialog button text for the option to confirm deleting all records [CHAR LIMIT=20] -->
+    <string name="delete">Delete</string>
+
+    <!-- Dialog button text for the option to cancel deletion of all measurement records [CHAR LIMIT=20] -->
+    <string name="cancel">Cancel</string>
+
+    <!-- Label for overview category of attributes in the editor [CHAR LIMIT=30] -->
+    <string name="category_overview">Overview</string>
+
+    <!-- Text hint for name field in the editor [CHAR LIMIT=30] -->
+    <string name="hint_client_name">Name</string>
+
+    <!-- Text hint for breed field in the editor [CHAR LIMIT=30] -->
+    <string name="hint_client_title">Title</string>
+
+    <!-- Text hint for name field in the editor [CHAR LIMIT=30] -->
+    <string name="hint_default_values">0</string>
+
+    <!-- Units for weight of the pet (kilograms) [CHAR LIMIT=5] -->
+    <string name="unit_pet_weight">kg</string>
+
+    <!-- Label for gender information in the editor [CHAR LIMIT=30] -->
+    <string name="category_gender">Gender</string>
+
+    <!-- Label for measurement information in the editor [CHAR LIMIT=30] -->
+    <string name="category_head">Head</string>
+
+    <!-- Label for measurement information in the editor [CHAR LIMIT=30] -->
+    <string name="category_neck">Neck</string>
+
+    <!-- Label for measurement information in the editor [CHAR LIMIT=30] -->
+    <string name="category_neckline">Neck Line</string>
+
+    <!-- Label for measurement information in the editor [CHAR LIMIT=30] -->
+    <string name="category_bustpoint">Bust Point</string>
+
+    <!-- Label for measurement information in the editor [CHAR LIMIT=30] -->
+    <string name="category_underbust">Under Bust</string>
+
+    <!-- Label for measurement information in the editor [CHAR LIMIT=30] -->
+    <string name="category_bust">Bust</string>
+
+    <!-- Label for measurement information in the editor [CHAR LIMIT=30] -->
+    <string name="category_waist">Waist</string>
+
+    <!-- Label for measurement information in the editor [CHAR LIMIT=30] -->
+    <string name="category_hip">Hip</string>
+
+    <!-- Label for measurement information in the editor [CHAR LIMIT=30] -->
+    <string name="category_shoulder">Shoulder</string>
+
+    <!-- Label for measurement information in the editor [CHAR LIMIT=30] -->
+    <string name="category_chest">Chest</string>
+
+    <!-- Label for measurement information in the editor [CHAR LIMIT=30] -->
+    <string name="category_gown_length">Gown Length</string>
+
+    <!-- Label for measurement information in the editor [CHAR LIMIT=30] -->
+    <string name="category_blouse_length">Blouse Length</string>
+
+    <!-- Label for measurement information in the editor [CHAR LIMIT=30] -->
+    <string name="category_short_gown_length">Short Gown Length</string>
+
+    <!-- Label for measurement information in the editor [CHAR LIMIT=30] -->
+    <string name="category_sleeve_length">Sleeve Length</string>
+
+    <!-- Label for measurement information in the editor [CHAR LIMIT=30] -->
+    <string name="category_armhole">Arm Hole</string>
+
+    <!-- Label for measurement information in the editor [CHAR LIMIT=30] -->
+    <string name="category_knee_length">Knee Length</string>
+
+    <!-- Label for measurement information in the editor [CHAR LIMIT=30] -->
+    <string name="category_half_length">Half Length</string>
+
+    <!-- Label for measurement information in the editor [CHAR LIMIT=30] -->
+    <string name="category_trouser_length">Trouser Length</string>
+
+    <!-- Label for measurement information in the editor [CHAR LIMIT=30] -->
+    <string name="category_thigh">Thigh</string>
+
+    <!-- Label for measurement information in the editor [CHAR LIMIT=30] -->
+    <string name="category_trouser_bottom">Trouser Bottom</string>
+
+    <!-- Title for the activity to add a new pet [CHAR LIMIT=40] -->
+    <string name="editor_activity_title_new_record">Add a Measurement Record</string>
+
+    <!-- Title for the activity to add a new pet [CHAR LIMIT=40] -->
+    <string name="editor_activity_title_edit_record">Edit Measurement Record</string>
+
+    <!-- Dialog message to make sure all fields are not left empty [CHAR LIMIT=NONE] -->
+    <string name="some_fields_are_empty">Looks like the Name &amp; Title field was not filled. this record will not be saved</string>
+
+    <!-- Text hint to show successful insert of record -->
+    <string name="insert_successful"> Record saved successfully</string>
+
+    <!-- Text hint to show failed insert of record -->
+    <string name="insert_fail"> Record failed to save</string>
+
+    <!-- Toast message in editor when current record was successfully updated [CHAR LIMIT=NONE] -->
+    <string name="editor_update_record_successful">Record updated</string>
+
+    <!-- Toast message in editor when current pet has failed to be updated [CHAR LIMIT=NONE] -->
+    <string name="editor_update_record_failed">Error with updating record</string>
+
+    <!-- Dialog message to ask the user to confirm deleting the current record [CHAR LIMIT=NONE] -->
+    <string name="delete_dialog_msg">Delete this record?</string>
+
+    <!-- Toast message in editor when current record was successfully deleted [CHAR LIMIT=NONE] -->
+    <string name="editor_delete_record_successful">Record deleted</string>
+
+    <!-- Toast message in editor when current record has failed to be deleted [CHAR LIMIT=NONE] -->
+    <string name="editor_delete_record_failed">Error with deleting record</string>
+
+    <!-- Dialog message when user is leaving editor but hasn't saved changes [CHAR LIMIT=NONE] -->
+    <string name="unsaved_changes_dialog_msg">Discard your changes and quit editing?</string>
+
+    <!-- Dialog button text for the option to discard a user's changes [CHAR LIMIT=20] -->
+    <string name="discard">Discard</string>
+
+    <!-- Dialog button text for the option to keep editing the current record [CHAR LIMIT=20] -->
+    <string name="keep_editing">Keep Editing</string>
+</resources>
