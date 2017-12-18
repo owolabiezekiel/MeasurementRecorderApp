@@ -48,7 +48,7 @@ public class RecordProvider extends ContentProvider {
             case RECORD_ID:
                 selection = RecordEntry._ID + "=?";
                 selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
-                cursor = db.query(RecordEntry.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
+                cursor = db.query(RecordEntry.TABLE_NAME, projection, selection, selectionArgs, null, null, RecordEntry.COLUMN_CLIENT_NAME);
                 break;
             default:
                 throw new IllegalArgumentException("Cannot query unknown URI " + uri);
