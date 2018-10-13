@@ -41,7 +41,7 @@
     <string name="cancel">Cancel</string>
 
     <!-- Label for overview category of attributes in the editor [CHAR LIMIT=30] -->
-    <string name="category_overview">Overview</string>
+    <string name="category_overview">Client Bio</string>
 
     <!-- Text hint for name field in the editor [CHAR LIMIT=30] -->
     <string name="hint_client_name">Name</string>
