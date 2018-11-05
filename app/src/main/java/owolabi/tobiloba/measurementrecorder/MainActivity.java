@@ -138,7 +138,22 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         // Inflate the menu options from the res/menu/menu_main.xml file.
         // This adds menu items to the app bar.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        disableSomeMenuItems(menu);
         return true;
+    }
+
+
+    private void disableSomeMenuItems(Menu menu){
+        MenuItem sync = menu.findItem(R.id.action_sync_record_to_cloud);
+        MenuItem signIn = menu.findItem(R.id.action_sign_in);
+        if (mUser == null){
+            sync.setEnabled(false); 
+            signIn.setEnabled(true);
+        } else {
+            sync.setEnabled(true);
+            signIn.setEnabled(false);
+        }
+
     }
 
 
