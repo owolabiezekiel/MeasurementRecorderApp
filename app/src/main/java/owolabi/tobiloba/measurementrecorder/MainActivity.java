@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     private RecordDBHelper mDbHelper;
     private static final int RECORD_LOADER = 0;
-    RecordCursorAdapter mCursorAdapter;
+    private RecordCursorAdapter mCursorAdapter;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseUser mUser;
@@ -147,7 +147,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         MenuItem sync = menu.findItem(R.id.action_sync_record_to_cloud);
         MenuItem signIn = menu.findItem(R.id.action_sign_in);
         if (mUser == null){
-            sync.setEnabled(false); 
+            sync.setEnabled(false);
             signIn.setEnabled(true);
         } else {
             sync.setEnabled(true);
