@@ -20,4 +20,14 @@
         android:id="@+id/action_delete_all_entries"
         android:title="@string/action_delete_all_entries"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_sync_record_to_cloud"
+        android:title="@string/action_sync_record_to_cloud"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_sign_in"
+        android:title="@string/action_sign_in"
+        app:showAsAction="never" />
 </menu>

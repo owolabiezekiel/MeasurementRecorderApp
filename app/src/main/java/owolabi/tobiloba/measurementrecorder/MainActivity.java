@@ -7,7 +7,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -18,19 +20,42 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import owolabi.tobiloba.measurementrecorder.database.RecordContract.RecordEntry;
+import owolabi.tobiloba.measurementrecorder.database.RecordDBHelper;
+
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
+    private RecordDBHelper mDbHelper;
     private static final int RECORD_LOADER = 0;
     RecordCursorAdapter mCursorAdapter;
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
+    private FirebaseUser mUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mDbHelper = new RecordDBHelper(this.getBaseContext());
 
+        Toast.makeText(this, getCount()+" records", Toast.LENGTH_LONG).show();
+        mAuth = FirebaseAuth.getInstance();
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                mUser = firebaseAuth.getCurrentUser();
+
+                if(mUser == null){
+                    Toast.makeText(MainActivity.this, "No user is signed in", Toast.LENGTH_SHORT).show();
+                }
+            }
+        };
         // Setup FAB to open EditorActivity
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -67,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
      */
     private void deleteAllPets() {
         int rowsDeleted = getContentResolver().delete(RecordEntry.CONTENT_URI, null, null);
-        Log.v("CatalogActivity", rowsDeleted + " rows deleted from pet database");
+        Log.v("CatalogActivity", rowsDeleted + " rows deleted from measurement database");
     }
 
 
@@ -98,6 +123,16 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
 
+    private void syncRecordToCloud(){
+        Toast.makeText(this, "Sorry, This Feauture is still under development at this time", Toast.LENGTH_LONG).show();
+    }
+
+    private void signUpOrSignIn(){
+        Intent intent = new Intent(MainActivity.this, SignUpLogin.class);
+        startActivity(intent);
+    }
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu options from the res/menu/menu_main.xml file.
@@ -111,9 +146,17 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public boolean onOptionsItemSelected(MenuItem item) {
         // User clicked on a menu option in the app bar overflow menu
         switch (item.getItemId()) {
-            // Respond to a click on the "Delete all entries" menu option
+            // Respond to a click on the "Delete all entries" and "Sync Database to Cloud" menu option
             case R.id.action_delete_all_entries:
                 showDeleteConfirmationDialog();
+                return true;
+
+            case R.id.action_sync_record_to_cloud:
+                syncRecordToCloud();
+                return true;
+
+            case R.id.action_sign_in:
+                signUpOrSignIn();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -142,5 +185,29 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         mCursorAdapter.swapCursor(null);
+    }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mAuth.addAuthStateListener(mAuthListener);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (mAuthListener != null){
+            mAuth.removeAuthStateListener(mAuthListener);
+        }
+    }
+
+    private int getCount(){
+        SQLiteDatabase database = mDbHelper.getReadableDatabase();
+        String allRecords = "SELECT * FROM records";
+        Cursor cursor = database.rawQuery(allRecords, null);
+        int count = cursor.getCount();
+        cursor.close();
+        return count;
     }
 }

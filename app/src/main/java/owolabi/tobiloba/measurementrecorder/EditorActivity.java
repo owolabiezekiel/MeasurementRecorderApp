@@ -308,6 +308,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             // Since no fields were modified, we can return early without creating a new pet.
             // No need to create ContentValues and no need to do any ContentProvider operations.
             Toast.makeText(this, getString(R.string.some_fields_are_empty), Toast.LENGTH_LONG).show();
+            return;
         }
 
 
@@ -458,8 +459,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
 
         if (mCurrentRecordUri == null) {
-            // This is a NEW pet, so insert a new pet into the provider,
-            // returning the content URI for the new pet.
+            // This is a NEW measurement, so insert a new measurement into the provider,
+            // returning the content URI for the new measurement.
 
             Uri newUri = getContentResolver().insert(RecordEntry.CONTENT_URI, values);
             if (newUri == null) {

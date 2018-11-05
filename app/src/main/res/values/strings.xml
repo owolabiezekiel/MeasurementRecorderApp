@@ -156,4 +156,18 @@
 
     <!-- Dialog button text for the option to keep editing the current record [CHAR LIMIT=20] -->
     <string name="keep_editing">Keep Editing</string>
+
+    <string name="action_sync_record_to_cloud">Sync Database With Cloud</string>
+
+    <string name="action_sign_in">Sign in</string>
+
+    <string name="signuplogin_activity_title">Sign up of Sign in with Gmail</string>
+
+    <string name="first_time">First Time?</string>
+
+    <string name="already_a_member">Previously Signed Up?</string>
+
+    <string name="gmail_login_button">Login</string>
+
+    <string name="gmail_signup_button">Sign Up</string>
 </resources>

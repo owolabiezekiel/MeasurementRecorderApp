@@ -213,4 +213,13 @@ public class RecordProvider extends ContentProvider {
 
         return numOfRowsAffected;
     }
+
+    private int getCount(){
+        SQLiteDatabase database = mDbHelper.getReadableDatabase();
+        String allRecords = "SELECT * FROM records";
+        Cursor cursor = database.rawQuery(allRecords, null);
+        int count = cursor.getCount();
+        cursor.close();
+        return count;
+    }
 }
