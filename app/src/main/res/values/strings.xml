@@ -161,7 +161,9 @@
 
     <string name="action_sign_in">Sign in</string>
 
-    <string name="signuplogin_activity_title">Sign up of Sign in with Gmail</string>
+    <string name="action_sign_out">Sign out</string>
+
+    <string name="signup_login_activity_title">Sign up or Sign in with Google</string>
 
     <string name="first_time">First Time?</string>
 
@@ -170,4 +172,5 @@
     <string name="gmail_login_button">Login</string>
 
     <string name="gmail_signup_button">Sign Up</string>
+
 </resources>

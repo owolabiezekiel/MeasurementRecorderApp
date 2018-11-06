@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         setContentView(R.layout.activity_main);
         mDbHelper = new RecordDBHelper(this.getBaseContext());
 
-        Toast.makeText(this, getCount()+" records", Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, getCount()+" records", Toast.LENGTH_LONG).show();
         mAuth = FirebaseAuth.getInstance();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -53,6 +53,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
                 if(mUser == null){
                     Toast.makeText(MainActivity.this, "No user is signed in", Toast.LENGTH_SHORT).show();
+                } else{
+                    Toast.makeText(MainActivity.this, "Active account: " + mUser.getEmail() , Toast.LENGTH_LONG).show();
                 }
             }
         };
@@ -132,6 +134,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         startActivity(intent);
     }
 
+    private void signOut(){
+        Toast.makeText(getApplicationContext(), mUser.getEmail() + " signed out successfully", Toast.LENGTH_LONG).show();
+        mAuth.signOut();
+        recreate();
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -146,12 +154,15 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private void disableSomeMenuItems(Menu menu){
         MenuItem sync = menu.findItem(R.id.action_sync_record_to_cloud);
         MenuItem signIn = menu.findItem(R.id.action_sign_in);
+        MenuItem signOut = menu.findItem(R.id.action_sign_out);
         if (mUser == null){
             sync.setEnabled(false);
             signIn.setEnabled(true);
+            signOut.setEnabled(false);
         } else {
             sync.setEnabled(true);
             signIn.setEnabled(false);
+            signOut.setEnabled(true);
         }
 
     }
@@ -172,6 +183,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
             case R.id.action_sign_in:
                 signUpOrSignIn();
+                return true;
+
+            case R.id.action_sign_out:
+                signOut();
                 return true;
         }
         return super.onOptionsItemSelected(item);
