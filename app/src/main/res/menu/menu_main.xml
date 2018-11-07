@@ -27,6 +27,11 @@
         app:showAsAction="never" />
 
     <item
+        android:id="@+id/action_sync_record_from_cloud"
+        android:title="@string/action_sync_record_from_cloud"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/action_sign_in"
         android:title="@string/action_sign_in"
         app:showAsAction="never" />

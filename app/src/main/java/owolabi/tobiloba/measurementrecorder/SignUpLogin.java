@@ -1,11 +1,10 @@
 package owolabi.tobiloba.measurementrecorder;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -26,7 +25,9 @@ import com.google.firebase.auth.GoogleAuthProvider;
 public class SignUpLogin extends AppCompatActivity {
     private SignInButton googleSignInButton;
     private FirebaseAuth mAuth;
+    private FirebaseUser mUser;
     private GoogleSignInClient mGoogleSignInClient;
+    private ProgressDialog mProgress;
     private static final int RC_SIGN_IN = 101;
 
     @Override
@@ -34,6 +35,11 @@ public class SignUpLogin extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up_login);
         setTitle(getString(R.string.signup_login_activity_title));
+        mProgress = new ProgressDialog(SignUpLogin.this);
+        mProgress.setTitle("Hang on...");
+        mProgress.setMessage("Signing in...");
+        mProgress.setCancelable(false);
+        mProgress.setIndeterminate(true);
         googleSignInButton = (SignInButton) findViewById(R.id.login_with_google);
         mAuth = FirebaseAuth.getInstance();
 
@@ -54,8 +60,10 @@ public class SignUpLogin extends AppCompatActivity {
     }
 
     private void signIn() {
+        mProgress.show();
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
+
     }
 
 
@@ -71,9 +79,23 @@ public class SignUpLogin extends AppCompatActivity {
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account);
-                Intent intent = new Intent(SignUpLogin.this, MainActivity.class);
-                startActivity(intent);
-                finish();
+                Thread timerThread = new Thread(){
+                    public void run(){
+                        try{
+                            sleep(3000);
+                        }catch(InterruptedException e){
+                            e.printStackTrace();
+                        }finally{
+
+                        }
+                    }
+                };
+                timerThread.start();
+                mProgress.dismiss();
+                Toast.makeText(SignUpLogin.this, "Sign in successfull. Please go back and swipe down to refresh", Toast.LENGTH_LONG)
+                        .show();
+
+
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
             }
@@ -88,8 +110,7 @@ public class SignUpLogin extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            Toast.makeText(SignUpLogin.this, user.getEmail(), Toast.LENGTH_SHORT).show();
+
 
                         } else {
                             // If sign in fails, display a message to the user.

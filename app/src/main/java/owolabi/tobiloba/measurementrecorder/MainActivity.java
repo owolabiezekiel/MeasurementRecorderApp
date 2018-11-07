@@ -11,6 +11,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,6 +25,7 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
 
 import owolabi.tobiloba.measurementrecorder.database.RecordContract.RecordEntry;
 import owolabi.tobiloba.measurementrecorder.database.RecordDBHelper;
@@ -35,8 +37,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private static final int RECORD_LOADER = 0;
     private RecordCursorAdapter mCursorAdapter;
     private FirebaseAuth mAuth;
+    private FirebaseDatabase mDatabase;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseUser mUser;
+    private SwipeRefreshLayout swipeContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +48,20 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         setContentView(R.layout.activity_main);
         mDbHelper = new RecordDBHelper(this.getBaseContext());
 
-        //Toast.makeText(this, getCount()+" records", Toast.LENGTH_LONG).show();
+        //  Check Firebase Auth state to set menu items accordingly
+        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
+        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_dark);
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener(){
+            @Override
+            public void onRefresh(){
+                recreate();
+                Toast.makeText(MainActivity.this, "State refreshed", Toast.LENGTH_SHORT).show();
+                swipeContainer.setRefreshing(false);
+            }
+        });
+
+
+
         mAuth = FirebaseAuth.getInstance();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -92,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     /**
      * Helper method to delete all pets in the database.
      */
-    private void deleteAllPets() {
+    private void deleteAllRecords() {
         int rowsDeleted = getContentResolver().delete(RecordEntry.CONTENT_URI, null, null);
         Log.v("CatalogActivity", rowsDeleted + " rows deleted from measurement database");
     }
@@ -106,7 +123,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User clicked the "Delete" button, so delete the pet.
-                deleteAllPets();
+                deleteAllRecords();
             }
         });
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -153,14 +170,17 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     private void disableSomeMenuItems(Menu menu){
         MenuItem sync = menu.findItem(R.id.action_sync_record_to_cloud);
+        MenuItem download = menu.findItem(R.id.action_sync_record_from_cloud);
         MenuItem signIn = menu.findItem(R.id.action_sign_in);
         MenuItem signOut = menu.findItem(R.id.action_sign_out);
         if (mUser == null){
             sync.setEnabled(false);
+            download.setEnabled(false);
             signIn.setEnabled(true);
             signOut.setEnabled(false);
         } else {
             sync.setEnabled(true);
+            download.setEnabled(true);
             signIn.setEnabled(false);
             signOut.setEnabled(true);
         }
@@ -239,5 +259,13 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         int count = cursor.getCount();
         cursor.close();
         return count;
+    }
+
+    private void uploadDatabaseToCloud(){
+
+    }
+
+    private void downloadDatabaseFromCloud(){
+
     }
 }

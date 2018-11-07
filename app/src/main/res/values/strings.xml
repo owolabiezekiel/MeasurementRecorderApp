@@ -157,7 +157,9 @@
     <!-- Dialog button text for the option to keep editing the current record [CHAR LIMIT=20] -->
     <string name="keep_editing">Keep Editing</string>
 
-    <string name="action_sync_record_to_cloud">Sync Database With Cloud</string>
+    <string name="action_sync_record_to_cloud">Upload Record To Cloud</string>
+
+    <string name="action_sync_record_from_cloud">Restore Record From Cloud</string>
 
     <string name="action_sign_in">Sign in</string>
 
