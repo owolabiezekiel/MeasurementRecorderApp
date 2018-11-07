@@ -79,20 +79,8 @@ public class SignUpLogin extends AppCompatActivity {
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account);
-                Thread timerThread = new Thread(){
-                    public void run(){
-                        try{
-                            sleep(3000);
-                        }catch(InterruptedException e){
-                            e.printStackTrace();
-                        }finally{
-
-                        }
-                    }
-                };
-                timerThread.start();
                 mProgress.dismiss();
-                Toast.makeText(SignUpLogin.this, "Sign in successfull. Please go back and swipe down to refresh", Toast.LENGTH_LONG)
+                Toast.makeText(SignUpLogin.this, "Sign in successful. Please go back and swipe down to refresh", Toast.LENGTH_LONG)
                         .show();
 
 

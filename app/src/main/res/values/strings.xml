@@ -22,6 +22,9 @@
     <!-- Label for editor overflow menu option that deletes the current measurement [CHAR LIMIT=20] -->
     <string name="action_delete">Delete</string>
 
+    <!-- Label for editor overflow menu option that deletes the current measurement [CHAR LIMIT=20] -->
+    <string name="action_download_from_cloud">Continue</string>
+
     <!-- Title text for the empty view, which describes the empty dog house image [CHAR LIMIT=50] -->
     <string name="empty_view_title_text">It\'s a bit dry here..</string>
 
@@ -33,6 +36,9 @@
 
     <!-- Dialog message to ask the user to confirm deleting all measurement records [CHAR LIMIT=NONE] -->
     <string name="delete_all_records_dialog_msg">Are You Sure You Want To Delete All Measurement record?</string>
+
+    <!-- Dialog message to ask the user to confirm Syncing measurements from the cloud [CHAR LIMIT=NONE] -->
+    <string name="download_from_cloud_dialog_msg">Are You Sure You Want Sync Measurement From Cloud? This will replace cloud measurements with the ones on your device</string>
 
     <!-- Dialog button text for the option to confirm deleting all records [CHAR LIMIT=20] -->
     <string name="delete">Delete</string>

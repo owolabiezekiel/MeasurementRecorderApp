@@ -25,10 +25,16 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
 
 import owolabi.tobiloba.measurementrecorder.database.RecordContract.RecordEntry;
 import owolabi.tobiloba.measurementrecorder.database.RecordDBHelper;
+import owolabi.tobiloba.measurementrecorder.model.Measurement;
+
 
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -38,9 +44,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private RecordCursorAdapter mCursorAdapter;
     private FirebaseAuth mAuth;
     private FirebaseDatabase mDatabase;
+    private DatabaseReference mDatabaseReference;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseUser mUser;
     private SwipeRefreshLayout swipeContainer;
+    private DataSnapshot dataSnapshot;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +56,19 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         setContentView(R.layout.activity_main);
         mDbHelper = new RecordDBHelper(this.getBaseContext());
 
-        //  Check Firebase Auth state to set menu items accordingly
+
+
+        //Instantiate Firebase libraries needed-------------------------------------------------------------------
+        mAuth = FirebaseAuth.getInstance();
+        mUser = mAuth.getCurrentUser();
+        mDatabase = FirebaseDatabase.getInstance();
+        mDatabaseReference = mDatabase.getReference("users/" + mUser.getUid());
+
+        //--------------------------------------------------------------------------------------------------------
+
+
+
+        //  Check Firebase Auth state to set menu items accordingly-----------------------------------------------
         swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
         swipeContainer.setColorSchemeResources(android.R.color.holo_blue_dark);
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener(){
@@ -59,15 +79,15 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 swipeContainer.setRefreshing(false);
             }
         });
+        //--------------------------------------------------------------------------------------------------------
 
 
 
-        mAuth = FirebaseAuth.getInstance();
+
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 mUser = firebaseAuth.getCurrentUser();
-
                 if(mUser == null){
                     Toast.makeText(MainActivity.this, "No user is signed in", Toast.LENGTH_SHORT).show();
                 } else{
@@ -75,6 +95,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 }
             }
         };
+
+
+
+
         // Setup FAB to open EditorActivity
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -84,6 +108,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 startActivity(intent);
             }
         });
+
+
+
 
         ListView recordListView = (ListView) findViewById(R.id.list);
         // Find and set empty view on the ListView, so that it only shows when the list has 0 items.
@@ -142,9 +169,30 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
 
-    private void syncRecordToCloud(){
-        Toast.makeText(this, "Sorry, This Feauture is still under development at this time", Toast.LENGTH_LONG).show();
+
+
+    private void showDownloadConfirmationDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.download_from_cloud_dialog_msg);
+        builder.setPositiveButton(R.string.action_download_from_cloud, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                downloadDatabaseFromCloud();
+            }
+        });
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                if (dialog != null) {
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        // Create and show the AlertDialog
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
+
+
 
     private void signUpOrSignIn(){
         Intent intent = new Intent(MainActivity.this, SignUpLogin.class);
@@ -198,7 +246,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 return true;
 
             case R.id.action_sync_record_to_cloud:
-                syncRecordToCloud();
+                uploadDatabaseToCloud();
                 return true;
 
             case R.id.action_sign_in:
@@ -207,6 +255,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
             case R.id.action_sign_out:
                 signOut();
+                return true;
+
+            case R.id.action_sync_record_from_cloud:
+                showDownloadConfirmationDialog();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -262,10 +314,60 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
     private void uploadDatabaseToCloud(){
+        SQLiteDatabase database = mDbHelper.getReadableDatabase();
+        String allRecords = "SELECT * FROM records";
+        final Cursor cursor = database.rawQuery(allRecords, null);
+        //Toast.makeText(MainActivity.this, "Moving " + count + " to cloud", Toast.LENGTH_SHORT).show();
+        ArrayList<Measurement> measurementArrayList = new ArrayList<>();
+        if (cursor.moveToFirst()){
+            do{
+                String title = cursor.getString(cursor.getColumnIndex(RecordEntry.COLUMN_CLIENT_TITLE));
+                String name = cursor.getString(cursor.getColumnIndex(RecordEntry.COLUMN_CLIENT_NAME));
+                int gender = cursor.getInt(cursor.getColumnIndex(RecordEntry.COLUMN_CLIENT_GENDER));
+                int head = cursor.getInt(cursor.getColumnIndex(RecordEntry.COLUMN_HEAD));
+                int neck = cursor.getInt(cursor.getColumnIndex(RecordEntry.COLUMN_NECK));
+                int neckline = cursor.getInt(cursor.getColumnIndex(RecordEntry.COLUMN_NECKLINE));
+                int bustpoint = cursor.getInt(cursor.getColumnIndex(RecordEntry.COLUMN_BUST_POINT));
+                int underbust = cursor.getInt(cursor.getColumnIndex(RecordEntry.COLUMN_UNDER_BUST));
+                int bust = cursor.getInt(cursor.getColumnIndex(RecordEntry.COLUMN_BUST));
+                int waist = cursor.getInt(cursor.getColumnIndex(RecordEntry.COLUMN_WAIST));
+                int hip = cursor.getInt(cursor.getColumnIndex(RecordEntry.COLUMN_HIP));
+                int shoulder = cursor.getInt(cursor.getColumnIndex(RecordEntry.COLUMN_SHOULDER));
+                int chest = cursor.getInt(cursor.getColumnIndex(RecordEntry.COLUMN_CHEST));
+                int gownlength = cursor.getInt(cursor.getColumnIndex(RecordEntry.COLUMN_GOWN_LENGTH));
+                int blouselength = cursor.getInt(cursor.getColumnIndex(RecordEntry.COLUMN_BLOUSE_LENGTH));
+                int shortGownLength = cursor.getInt(cursor.getColumnIndex(RecordEntry.COLUMN_SHORT_GOWN_LENGTH));
+                int sleeveLength = cursor.getInt(cursor.getColumnIndex(RecordEntry.COLUMN_SLEEVE_LENGTH));
+                int armHole = cursor.getInt(cursor.getColumnIndex(RecordEntry.COLUMN_ARMHOLE));
+                int kneeLength = cursor.getInt(cursor.getColumnIndex(RecordEntry.COLUMN_KNEE_LENGTH));
+                int halfLength = cursor.getInt(cursor.getColumnIndex(RecordEntry.COLUMN_HALF_LENGTH));
+                int trouserLength = cursor.getInt(cursor.getColumnIndex(RecordEntry.COLUMN_TROUSER_LENGTH));
+                int thigh = cursor.getInt(cursor.getColumnIndex(RecordEntry.COLUMN_THIGH));
+                int trouserBottom = cursor.getInt(cursor.getColumnIndex(RecordEntry.COLUMN_TROUSER_BOTTOM));
 
+
+                Measurement measurement = new Measurement(title, name, gender, head, neck, neckline, bustpoint, underbust, bust, waist, hip,
+                        shoulder, chest, gownlength, blouselength, shortGownLength, sleeveLength, armHole, kneeLength, halfLength, trouserLength,
+                        thigh, trouserBottom);
+                measurementArrayList.add(measurement);
+
+
+
+                /*Toast.makeText(MainActivity.this, "Moving record " + (cursor.getPosition() + 1) + " to cloud\nSex: "
+                        + cursor.getString(cursor.getColumnIndex(RecordEntry.COLUMN_CLIENT_GENDER)) + " at column " + cursor.getColumnName(3),
+                        Toast.LENGTH_LONG).show();*/
+
+            } while (cursor.moveToNext());
+
+            mDatabaseReference.child("measurement").setValue(measurementArrayList);
+            Toast.makeText(MainActivity.this, "ArrayList size: " + measurementArrayList.size(), Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void downloadDatabaseFromCloud(){
-
+        Toast.makeText(MainActivity.this, "Work in progress..", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(MainActivity.this, (int)dataSnapshot.getChildrenCount(), Toast.LENGTH_SHORT).show();
+        //deleteAllRecords();
+        recreate();
     }
 }
