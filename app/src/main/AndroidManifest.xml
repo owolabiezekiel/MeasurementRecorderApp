@@ -40,13 +40,23 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
+        <activity
+            android:name=".SignUpLogin"
+            android:label="@string/signup_login_activity_title"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/EditorTheme">
+
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
 
         <provider
             android:name=".database.RecordProvider"
             android:authorities="owolabi.tobiloba.measurementrecorder"
             android:exported="true" />
 
-        <activity android:name=".SignUpLogin"></activity>
     </application>
 
 </manifest>
