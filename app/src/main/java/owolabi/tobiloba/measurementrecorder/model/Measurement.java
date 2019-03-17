@@ -4,35 +4,35 @@ public class Measurement {
     public String title;
     public String name;
     public int gender;
-    public int head;
-    public int neck;
-    public int neckline;
-    public int bustpoint;
-    public int underbust;
-    public int bust;
-    public int waist;
-    public int hip;
-    public int shoulder;
-    public int chest;
-    public int gownlength;
-    public int blouselength;
-    public int shortGownLength;
-    public int sleeveLength;
-    public int armHole;
-    public int kneeLength;
-    public int halfLength;
-    public int trouserLength;
-    public int thigh;
-    public int trouserBottom;
+    public float head;
+    public float neck;
+    public float neckline;
+    public float bustpoint;
+    public float underbust;
+    public float bust;
+    public float waist;
+    public float hip;
+    public float shoulder;
+    public float chest;
+    public float gownlength;
+    public float blouselength;
+    public float shortGownLength;
+    public float sleeveLength;
+    public float armHole;
+    public float kneeLength;
+    public float halfLength;
+    public float trouserLength;
+    public float thigh;
+    public float trouserBottom;
 
 
     public Measurement(){
 
     }
 
-    public Measurement(String title, String name, int gender, int head, int neck, int neckline, int bustpoint, int underbust, int bust,
-                       int waist, int hip, int shoulder, int chest, int gownlength, int blouselength, int shortGownLength, int sleeveLength,
-                       int armHole, int kneeLength, int halfLength, int trouserLength, int thigh, int trouserBottom) {
+    public Measurement(String title, String name, int gender, float head, float neck, float neckline, float bustpoint, float underbust, float bust, float waist,
+                       float hip, float shoulder, float chest, float gownlength, float blouselength, float shortGownLength, float sleeveLength, float armHole, float kneeLength,
+                       float halfLength, float trouserLength, float thigh, float trouserBottom) {
         this.title = title;
         this.name = name;
         this.gender = gender;
