@@ -1,35 +1,35 @@
 {
   "project_info": {
-    "project_number": "539167487121",
-    "firebase_url": "https://measurement-recorder.firebaseio.com",
-    "project_id": "measurement-recorder",
-    "storage_bucket": "measurement-recorder.appspot.com"
+    "project_number": "219518572374",
+    "firebase_url": "https://new-work-54368.firebaseio.com",
+    "project_id": "new-work-54368",
+    "storage_bucket": "new-work-54368.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:539167487121:android:af14ac91e7fc9a9b",
+        "mobilesdk_app_id": "1:219518572374:android:af14ac91e7fc9a9b",
         "android_client_info": {
           "package_name": "owolabi.tobiloba.measurementrecorder"
         }
       },
       "oauth_client": [
         {
-          "client_id": "539167487121-v62md7rpaal5aleetgtanvfgdbsc6g44.apps.googleusercontent.com",
+          "client_id": "219518572374-2ku9v9u4ei15rfp0g14uljua7fjeqevq.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "owolabi.tobiloba.measurementrecorder",
-            "certificate_hash": "7ba23403af9f3deeec19f8bdece0ad5d92656185"
+            "certificate_hash": "b361ddb31de31f8b6cceb25fd8d58ac4f91338a3"
           }
         },
         {
-          "client_id": "539167487121-lnofkj9a2vevmsp1jq28780n94b6c4vk.apps.googleusercontent.com",
+          "client_id": "219518572374-1gtsarsa3op45cqg5ogc5ud0e5dbd4jo.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDH0cqR4W23Nt8MWKZAQ-64_FpalVIa0yg"
+          "current_key": "AIzaSyCaH8gS7U0RhR1N34uavzriw3eLny0h5Ic"
         }
       ],
       "services": {
@@ -40,7 +40,7 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "539167487121-lnofkj9a2vevmsp1jq28780n94b6c4vk.apps.googleusercontent.com",
+              "client_id": "219518572374-1gtsarsa3op45cqg5ogc5ud0e5dbd4jo.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

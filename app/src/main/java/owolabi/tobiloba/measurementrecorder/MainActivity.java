@@ -442,5 +442,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
 
+    private void checkInternetConnection(){
+        
+    }
+
+
 
 }

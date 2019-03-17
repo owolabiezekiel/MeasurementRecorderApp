@@ -27,7 +27,6 @@ public class SignUpLogin extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseUser mUser;
     private GoogleSignInClient mGoogleSignInClient;
-    private ProgressDialog mProgress;
     private static final int RC_SIGN_IN = 101;
 
     @Override
@@ -35,12 +34,8 @@ public class SignUpLogin extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up_login);
         setTitle(getString(R.string.signup_login_activity_title));
-        mProgress = new ProgressDialog(SignUpLogin.this);
-        mProgress.setTitle("Hang on...");
-        mProgress.setMessage("Signing in...");
-        mProgress.setCancelable(false);
-        mProgress.setIndeterminate(true);
         googleSignInButton = (SignInButton) findViewById(R.id.login_with_google);
+        mUser = null;
         mAuth = FirebaseAuth.getInstance();
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -60,7 +55,6 @@ public class SignUpLogin extends AppCompatActivity {
     }
 
     private void signIn() {
-        mProgress.show();
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
 
@@ -79,7 +73,6 @@ public class SignUpLogin extends AppCompatActivity {
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account);
-                mProgress.dismiss();
                 Toast.makeText(SignUpLogin.this, "Sign in successful. Please go back and swipe down to refresh", Toast.LENGTH_LONG)
                         .show();
 
@@ -98,7 +91,12 @@ public class SignUpLogin extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-
+                            mUser = mAuth.getCurrentUser();
+                            Toast.makeText(SignUpLogin.this, mUser.getDisplayName() + mUser.getEmail() + mUser.getPhoneNumber(), Toast.LENGTH_LONG).show();
+                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                            startActivity(intent);
+                            finish();
+                            Toast.makeText(getApplicationContext(), "User Logged in successfully. Swipe down to refresh", Toast.LENGTH_LONG).show();
 
                         } else {
                             // If sign in fails, display a message to the user.
