@@ -320,140 +320,140 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
         // If some measurements were not provided by the user, don't try to parse the string into an
         // integer value. Use 0 by default.
-        int head = 0;
-        int neck = 0;
-        int neckline = 0;
-        int bustPoint = 0;
-        int underBust = 0;
-        int bust = 0;
-        int waist = 0;
-        int hip = 0;
-        int shoulder = 0;
-        int chest = 0;
-        int gownLength = 0;
-        int blouseLength = 0;
-        int shortGownLength = 0;
-        int sleeveLength = 0;
-        int armhole = 0;
-        int kneeLength = 0;
-        int halfLength = 0;
-        int trouserLength = 0;
-        int thigh = 0;
-        int trouserBottom = 0;
+        float head = 0;
+        float neck = 0;
+        float neckline = 0;
+        float bustPoint = 0;
+        float underBust = 0;
+        float bust = 0;
+        float waist = 0;
+        float hip = 0;
+        float shoulder = 0;
+        float chest = 0;
+        float gownLength = 0;
+        float blouseLength = 0;
+        float shortGownLength = 0;
+        float sleeveLength = 0;
+        float armhole = 0;
+        float kneeLength = 0;
+        float halfLength = 0;
+        float trouserLength = 0;
+        float thigh = 0;
+        float trouserBottom = 0;
 
         if (!TextUtils.isEmpty(headString)) {
-            head = Integer.parseInt(headString);
+            head = Float.parseFloat(headString);
         }
         values.put(RecordEntry.COLUMN_HEAD, head);
 
         if (!TextUtils.isEmpty(neckString)) {
-            neck = Integer.parseInt(neckString);
+            neck = Float.parseFloat(neckString);
         }
         values.put(RecordEntry.COLUMN_NECK, neck);
 
         if (!TextUtils.isEmpty(neckLineString)) {
-            neckline = Integer.parseInt(neckLineString);
+            neckline = Float.parseFloat(neckLineString);
         }
         values.put(RecordEntry.COLUMN_NECKLINE, neckline);
 
 
         if (!TextUtils.isEmpty(bustPointString)) {
-            bustPoint = Integer.parseInt(bustPointString);
+            bustPoint = Float.parseFloat(bustPointString);
         }
         values.put(RecordEntry.COLUMN_BUST_POINT, bustPoint);
 
 
         if (!TextUtils.isEmpty(underBustString)) {
-            underBust = Integer.parseInt(underBustString);
+            underBust = Float.parseFloat(underBustString);
         }
         values.put(RecordEntry.COLUMN_UNDER_BUST, underBust);
 
 
         if (!TextUtils.isEmpty(bustString)) {
-            bust = Integer.parseInt(bustString);
+            bust = Float.parseFloat(bustString);
         }
         values.put(RecordEntry.COLUMN_BUST, bust);
 
 
         if (!TextUtils.isEmpty(waistString)) {
-            waist = Integer.parseInt(waistString);
+            waist = Float.parseFloat(waistString);
         }
         values.put(RecordEntry.COLUMN_WAIST, waist);
 
 
         if (!TextUtils.isEmpty(hipString)) {
-            hip = Integer.parseInt(hipString);
+            hip = Float.parseFloat(hipString);
         }
         values.put(RecordEntry.COLUMN_HIP, hip);
 
 
         if (!TextUtils.isEmpty(shoulderString)) {
-            shoulder = Integer.parseInt(shoulderString);
+            shoulder = Float.parseFloat(shoulderString);
         }
         values.put(RecordEntry.COLUMN_SHOULDER, shoulder);
 
 
         if (!TextUtils.isEmpty(chestString)) {
-            chest = Integer.parseInt(chestString);
+            chest = Float.parseFloat(chestString);
         }
         values.put(RecordEntry.COLUMN_CHEST, chest);
 
 
         if (!TextUtils.isEmpty(gownLengthString)) {
-            gownLength = Integer.parseInt(gownLengthString);
+            gownLength = Float.parseFloat(gownLengthString);
         }
         values.put(RecordEntry.COLUMN_GOWN_LENGTH, gownLength);
 
 
         if (!TextUtils.isEmpty(blouseLengthString)) {
-            blouseLength = Integer.parseInt(blouseLengthString);
+            blouseLength = Float.parseFloat(blouseLengthString);
         }
         values.put(RecordEntry.COLUMN_BLOUSE_LENGTH, blouseLength);
 
 
         if (!TextUtils.isEmpty(shortGownLengthString)) {
-            shortGownLength = Integer.parseInt(shortGownLengthString);
+            shortGownLength = Float.parseFloat(shortGownLengthString);
         }
         values.put(RecordEntry.COLUMN_SHORT_GOWN_LENGTH, shortGownLength);
 
 
         if (!TextUtils.isEmpty(sleeveLengthString)) {
-            sleeveLength = Integer.parseInt(sleeveLengthString);
+            sleeveLength = Float.parseFloat(sleeveLengthString);
         }
         values.put(RecordEntry.COLUMN_SLEEVE_LENGTH, sleeveLength);
 
         if (!TextUtils.isEmpty(armholeString)) {
-            armhole = Integer.parseInt(armholeString);
+            armhole = Float.parseFloat(armholeString);
         }
         values.put(RecordEntry.COLUMN_ARMHOLE, armhole);
 
 
         if (!TextUtils.isEmpty(kneeLengthString)) {
-            kneeLength = Integer.parseInt(kneeLengthString);
+            kneeLength = Float.parseFloat(kneeLengthString);
         }
         values.put(RecordEntry.COLUMN_KNEE_LENGTH, kneeLength);
 
 
         if (!TextUtils.isEmpty(halfLengthString)) {
-            halfLength = Integer.parseInt(halfLengthString);
+            halfLength = Float.parseFloat(halfLengthString);
         }
         values.put(RecordEntry.COLUMN_HALF_LENGTH, halfLength);
 
 
         if (!TextUtils.isEmpty(trouserLengthString)) {
-            trouserLength = Integer.parseInt(trouserLengthString);
+            trouserLength = Float.parseFloat(trouserLengthString);
         }
         values.put(RecordEntry.COLUMN_TROUSER_LENGTH, trouserLength);
 
 
         if (!TextUtils.isEmpty(thighString)) {
-            thigh = Integer.parseInt(thighString);
+            thigh = Float.parseFloat(thighString);
         }
         values.put(RecordEntry.COLUMN_THIGH, thigh);
 
 
         if (!TextUtils.isEmpty(trouserBottomString)) {
-            trouserBottom = Integer.parseInt(trouserBottomString);
+            trouserBottom = Float.parseFloat(trouserBottomString);
         }
         values.put(RecordEntry.COLUMN_TROUSER_BOTTOM, trouserBottom);
 
@@ -805,50 +805,70 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             String title = cursor.getString(titleColumnIndex);
             String name = cursor.getString(nameColumnIndex);
             int gender = cursor.getInt(genderColumnIndex);
-            int head = cursor.getInt(headColumnIndex);
-            int neck = cursor.getInt(neckColumnIndex);
-            int neckline = cursor.getInt(neckLineColumnIndex);
-            int bustPoint = cursor.getInt(bustPointColumnIndex);
-            int underBust = cursor.getInt(underBustColumnIndex);
-            int bust = cursor.getInt(bustColumnIndex);
-            int waist = cursor.getInt(waistColumnIndex);
-            int hip = cursor.getInt(hipColumnIndex);
-            int shoulder = cursor.getInt(shoulderColumnIndex);
-            int chest = cursor.getInt(chestColumnIndex);
-            int gownLength = cursor.getInt(gownLengthColumnIndex);
-            int blouseLength = cursor.getInt(blouseLengthColumnIndex);
-            int shortGownLength = cursor.getInt(shortGownLengthColumnIndex);
-            int sleeveLength = cursor.getInt(sleeveLengthColumnIndex);
-            int armhole = cursor.getInt(armholeColumnIndex);
-            int kneeLength = cursor.getInt(kneeLengthColumnIndex);
-            int halfLength = cursor.getInt(halfLengthColumnIndex);
-            int trouserLength = cursor.getInt(trouserLengthColumnIndex);
-            int thigh = cursor.getInt(thighColumnIndex);
-            int trouserBottom = cursor.getInt(trouserBottomColumnIndex);
+            float head = cursor.getFloat(headColumnIndex);
+            float neck = cursor.getFloat(neckColumnIndex);
+            float neckline = cursor.getFloat(neckLineColumnIndex);
+            float bustPoint = cursor.getFloat(bustPointColumnIndex);
+            float underBust = cursor.getFloat(underBustColumnIndex);
+            float bust = cursor.getFloat(bustColumnIndex);
+            float waist = cursor.getFloat(waistColumnIndex);
+            float hip = cursor.getFloat(hipColumnIndex);
+            float shoulder = cursor.getFloat(shoulderColumnIndex);
+            float chest = cursor.getFloat(chestColumnIndex);
+            float gownLength = cursor.getFloat(gownLengthColumnIndex);
+            float blouseLength = cursor.getFloat(blouseLengthColumnIndex);
+            float shortGownLength = cursor.getFloat(shortGownLengthColumnIndex);
+            float sleeveLength = cursor.getFloat(sleeveLengthColumnIndex);
+            float armhole = cursor.getFloat(armholeColumnIndex);
+            float kneeLength = cursor.getFloat(kneeLengthColumnIndex);
+            float halfLength = cursor.getFloat(halfLengthColumnIndex);
+            float trouserLength = cursor.getFloat(trouserLengthColumnIndex);
+            float thigh = cursor.getFloat(thighColumnIndex);
+            float trouserBottom = cursor.getFloat(trouserBottomColumnIndex);
 
             // Update the views on the screen with the values from the database
             mTitleEditText.setText(title);
             mNameEditText.setText(name);
-            mHeadEditText.setText(Integer.toString(head));
-            mNeckEditText.setText(Integer.toString(neck));
-            mNeckLineEditText.setText(Integer.toString(neckline));
-            mBustPointEditText.setText(Integer.toString(bustPoint));
-            mUnderBustEditText.setText(Integer.toString(underBust));
-            mBustEditText.setText(Integer.toString(bust));
-            mWaistEditText.setText(Integer.toString(waist));
-            mHipEditText.setText(Integer.toString(hip));
-            mShoulderEditText.setText(Integer.toString(shoulder));
-            mChestEditText.setText(Integer.toString(chest));
-            mGownLengthEditText.setText(Integer.toString(gownLength));
-            mBlouseLengthEditText.setText(Integer.toString(blouseLength));
-            mShortGownLengthEditText.setText(Integer.toString(shortGownLength));
-            mSleeveLengthEditText.setText(Integer.toString(sleeveLength));
-            mArmholeEditText.setText(Integer.toString(armhole));
-            mKneeLengthEditText.setText(Integer.toString(kneeLength));
-            mHalfLengthEditText.setText(Integer.toString(halfLength));
-            mTrouserLengthEditText.setText(Integer.toString(trouserLength));
-            mThighEditText.setText(Integer.toString(thigh));
-            mTrouserBottomEditText.setText(Integer.toString(trouserBottom));
+            if (head > 0.0)
+                mHeadEditText.setText(Float.toString(head));
+            if (neck > 0.0)
+                mNeckEditText.setText(Float.toString(neck));
+            if (neckline > 0.0)
+                mNeckLineEditText.setText(Float.toString(neckline));
+            if (bustPoint > 0.0)
+                mBustPointEditText.setText(Float.toString(bustPoint));
+            if (underBust > 0.0)
+                mUnderBustEditText.setText(Float.toString(underBust));
+            if (bust > 0.0)
+                mBustEditText.setText(Float.toString(bust));
+            if (waist > 0.0)
+                mWaistEditText.setText(Float.toString(waist));
+            if (hip > 0.0)
+                mHipEditText.setText(Float.toString(hip));
+            if (shoulder > 0.0)
+                mShoulderEditText.setText(Float.toString(shoulder));
+            if (chest > 0.0)
+                mChestEditText.setText(Float.toString(chest));
+            if (gownLength > 0.0)
+                mGownLengthEditText.setText(Float.toString(gownLength));
+            if (blouseLength > 0.0)
+                mBlouseLengthEditText.setText(Float.toString(blouseLength));
+            if (shortGownLength > 0.0)
+                mShortGownLengthEditText.setText(Float.toString(shortGownLength));
+            if (sleeveLength > 0.0)
+                mSleeveLengthEditText.setText(Float.toString(sleeveLength));
+            if (armhole > 0.0)
+                mArmholeEditText.setText(Float.toString(armhole));
+            if (kneeLength > 0.0)
+                mKneeLengthEditText.setText(Float.toString(kneeLength));
+            if (halfLength > 0.0)
+                mHalfLengthEditText.setText(Float.toString(halfLength));
+            if (trouserLength > 0.0)
+                mTrouserLengthEditText.setText(Float.toString(trouserLength));
+            if (thigh > 0.0)
+                mThighEditText.setText(Float.toString(thigh));
+            if (trouserBottom > 0.0)
+                mTrouserBottomEditText.setText(Float.toString(trouserBottom));
 
 
             // Gender is a dropdown spinner, so map the constant value from the database
