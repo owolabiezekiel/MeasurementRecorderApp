@@ -181,6 +181,13 @@
 
     <string name="gmail_signup_button">Sign Up</string>
 
+    <string name="action_complain_or_suggestion">Suggestion/Complaint</string>
+
+    <string name="complaint_suggestion_text">Thank you for using Measurement Recorder! While this is a pet project developed just out of interest, I am always looking for ways to make it better seeing that I am not the end user of the application but I cant do that without your help. You can reach out to me through any of my social media accounts or email by clicking on any of the buttons of your choice
+        below. Once again I appreciate your use of this simple application. I cant wait to hear from you...</string>
+
     <!--<string name="default_web_client_id">719967102006-60ei1p967i70upilu227vnr9gf6qtjgs.apps.googleusercontent.com</string>-->
+
+    <string name="complaint_suggestion_header">We are listening...</string>
 
 </resources>
