@@ -47,7 +47,6 @@ import owolabi.tobiloba.measurementrecorder.database.RecordDBHelper;
 import owolabi.tobiloba.measurementrecorder.model.Measurement;
 
 
-
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private RecordDBHelper mDbHelper;
@@ -73,7 +72,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mProgress.setIndeterminate(true);
 
 
-
         //Instantiate Firebase libraries needed-------------------------------------------------------------------
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
@@ -83,13 +81,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         //--------------------------------------------------------------------------------------------------------
 
 
-
         //  Check Firebase Auth state to set menu items accordingly-----------------------------------------------
         swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
         swipeContainer.setColorSchemeResources(android.R.color.holo_blue_dark);
-        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener(){
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
-            public void onRefresh(){
+            public void onRefresh() {
                 recreate();
                 Toast.makeText(MainActivity.this, "State refreshed", Toast.LENGTH_SHORT).show();
                 swipeContainer.setRefreshing(false);
@@ -98,21 +95,17 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         //--------------------------------------------------------------------------------------------------------
 
 
-
-
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 mUser = firebaseAuth.getCurrentUser();
-                if(mUser == null){
+                if (mUser == null) {
                     Toast.makeText(MainActivity.this, "No user is signed in", Toast.LENGTH_SHORT).show();
-                } else{
-                    Toast.makeText(MainActivity.this, "Active account: " + mUser.getEmail() , Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(MainActivity.this, "Active account: " + mUser.getEmail(), Toast.LENGTH_LONG).show();
                 }
             }
         };
-
-
 
 
         // Setup FAB to open EditorActivity
@@ -124,8 +117,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 startActivity(intent);
             }
         });
-
-
 
 
         ListView recordListView = (ListView) findViewById(R.id.list);
@@ -185,36 +176,36 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
 
-
-
     private void showDownloadConfirmationDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(R.string.download_from_cloud_dialog_msg);
-        builder.setPositiveButton(R.string.action_download_from_cloud, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                downloadDatabaseFromCloud();
-            }
-        });
-        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                if (dialog != null) {
-                    dialog.dismiss();
+        if (checkInternetConnection()) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage(R.string.download_from_cloud_dialog_msg);
+            builder.setPositiveButton(R.string.action_download_from_cloud, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    downloadDatabaseFromCloud();
                 }
-            }
-        });
+            });
+            builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    if (dialog != null) {
+                        dialog.dismiss();
+                    }
+                }
+            });
 
-        // Create and show the AlertDialog
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
+            // Create and show the AlertDialog
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
+        }
     }
     //--------------------------------------------------------------------end of confirmation dialogs-----------------------------------------------------------------
 
-    private void signUpOrSignIn(){
+    private void signUpOrSignIn() {
         Intent intent = new Intent(MainActivity.this, SignUpLogin.class);
         startActivity(intent);
     }
 
-    private void signOut(){
+    private void signOut() {
         Toast.makeText(getApplicationContext(), mUser.getEmail() + " signed out successfully", Toast.LENGTH_LONG).show();
         mAuth.signOut();
         recreate();
@@ -232,12 +223,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
 
-    private void disableSomeMenuItems(Menu menu){
+    private void disableSomeMenuItems(Menu menu) {
         MenuItem sync = menu.findItem(R.id.action_sync_record_to_cloud);
         MenuItem download = menu.findItem(R.id.action_sync_record_from_cloud);
         MenuItem signIn = menu.findItem(R.id.action_sign_in);
         MenuItem signOut = menu.findItem(R.id.action_sign_out);
-        if (mUser == null){
+        if (mUser == null) {
             sync.setEnabled(false);
             download.setEnabled(false);
             signIn.setEnabled(true);
@@ -323,12 +314,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     protected void onStop() {
         super.onStop();
-        if (mAuthListener != null){
+        if (mAuthListener != null) {
             mAuth.removeAuthStateListener(mAuthListener);
         }
     }
 
-    private int getCount(){
+    private int getCount() {
         SQLiteDatabase database = mDbHelper.getReadableDatabase();
         String allRecords = "SELECT * FROM records";
         Cursor cursor = database.rawQuery(allRecords, null);
@@ -337,8 +328,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         return count;
     }
 
-    private void uploadDatabaseToCloud(){
-        if(checkInternetConnection()) {
+    private void uploadDatabaseToCloud() {
+        if (checkInternetConnection()) {
             mProgress.show();
             SQLiteDatabase database = mDbHelper.getReadableDatabase();
             String allRecords = "SELECT * FROM records";
@@ -386,75 +377,74 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         }
     }
 
-    private void downloadDatabaseFromCloud(){
-        if(checkInternetConnection()) {
-            mDatabaseReference = mDatabase.getReference("users/" + mUser.getUid());
-            mDatabaseReference.child("measurement").addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+    private void downloadDatabaseFromCloud() {
 
-                    if (dataSnapshot.exists()) {
-                        Toast.makeText(MainActivity.this, "True. It exists", Toast.LENGTH_SHORT).show();
-                        deleteAllRecords();
-                        int count = 0;
-                        for (DataSnapshot dt : dataSnapshot.getChildren()) {
-                            Measurement measurement = dt.getValue(Measurement.class);
-                            ContentValues values = new ContentValues();
+        mDatabaseReference = mDatabase.getReference("users/" + mUser.getUid());
+        mDatabaseReference.child("measurement").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                            values.put(RecordEntry.COLUMN_CLIENT_TITLE, measurement.title);
-                            values.put(RecordEntry.COLUMN_CLIENT_NAME, measurement.name);
-                            values.put(RecordEntry.COLUMN_CLIENT_GENDER, measurement.gender);
-                            values.put(RecordEntry.COLUMN_HEAD, measurement.head);
-                            values.put(RecordEntry.COLUMN_NECK, measurement.neck);
-                            values.put(RecordEntry.COLUMN_NECKLINE, measurement.neckline);
-                            values.put(RecordEntry.COLUMN_BUST_POINT, measurement.bustpoint);
-                            values.put(RecordEntry.COLUMN_UNDER_BUST, measurement.underbust);
-                            values.put(RecordEntry.COLUMN_BUST, measurement.bust);
-                            values.put(RecordEntry.COLUMN_WAIST, measurement.waist);
-                            values.put(RecordEntry.COLUMN_HIP, measurement.hip);
-                            values.put(RecordEntry.COLUMN_SHOULDER, measurement.shoulder);
-                            values.put(RecordEntry.COLUMN_CHEST, measurement.chest);
-                            values.put(RecordEntry.COLUMN_GOWN_LENGTH, measurement.gownlength);
-                            values.put(RecordEntry.COLUMN_BLOUSE_LENGTH, measurement.blouselength);
-                            values.put(RecordEntry.COLUMN_SHORT_GOWN_LENGTH, measurement.shortGownLength);
-                            values.put(RecordEntry.COLUMN_SLEEVE_LENGTH, measurement.sleeveLength);
-                            values.put(RecordEntry.COLUMN_ARMHOLE, measurement.armHole);
-                            values.put(RecordEntry.COLUMN_KNEE_LENGTH, measurement.kneeLength);
-                            values.put(RecordEntry.COLUMN_HALF_LENGTH, measurement.halfLength);
-                            values.put(RecordEntry.COLUMN_TROUSER_LENGTH, measurement.trouserLength);
-                            values.put(RecordEntry.COLUMN_THIGH, measurement.thigh);
-                            values.put(RecordEntry.COLUMN_TROUSER_BOTTOM, measurement.trouserBottom);
+                if (dataSnapshot.exists()) {
+                    Toast.makeText(MainActivity.this, "True. It exists", Toast.LENGTH_SHORT).show();
+                    deleteAllRecords();
+                    int count = 0;
+                    for (DataSnapshot dt : dataSnapshot.getChildren()) {
+                        Measurement measurement = dt.getValue(Measurement.class);
+                        ContentValues values = new ContentValues();
 
-                            Uri newUri = getContentResolver().insert(RecordEntry.CONTENT_URI, values);
-                            if (newUri == null) {
-                                Toast.makeText(MainActivity.this, getString(R.string.insert_fail), Toast.LENGTH_LONG).show();
-                            } else {
-                                Toast.makeText(MainActivity.this, getString(R.string.insert_successful), Toast.LENGTH_LONG).show();
-                            }
-                            count++;
-                            Toast.makeText(MainActivity.this, String.valueOf(dataSnapshot.getChildrenCount()) + " " + measurement.name, Toast.LENGTH_SHORT).show();
+                        values.put(RecordEntry.COLUMN_CLIENT_TITLE, measurement.title);
+                        values.put(RecordEntry.COLUMN_CLIENT_NAME, measurement.name);
+                        values.put(RecordEntry.COLUMN_CLIENT_GENDER, measurement.gender);
+                        values.put(RecordEntry.COLUMN_HEAD, measurement.head);
+                        values.put(RecordEntry.COLUMN_NECK, measurement.neck);
+                        values.put(RecordEntry.COLUMN_NECKLINE, measurement.neckline);
+                        values.put(RecordEntry.COLUMN_BUST_POINT, measurement.bustpoint);
+                        values.put(RecordEntry.COLUMN_UNDER_BUST, measurement.underbust);
+                        values.put(RecordEntry.COLUMN_BUST, measurement.bust);
+                        values.put(RecordEntry.COLUMN_WAIST, measurement.waist);
+                        values.put(RecordEntry.COLUMN_HIP, measurement.hip);
+                        values.put(RecordEntry.COLUMN_SHOULDER, measurement.shoulder);
+                        values.put(RecordEntry.COLUMN_CHEST, measurement.chest);
+                        values.put(RecordEntry.COLUMN_GOWN_LENGTH, measurement.gownlength);
+                        values.put(RecordEntry.COLUMN_BLOUSE_LENGTH, measurement.blouselength);
+                        values.put(RecordEntry.COLUMN_SHORT_GOWN_LENGTH, measurement.shortGownLength);
+                        values.put(RecordEntry.COLUMN_SLEEVE_LENGTH, measurement.sleeveLength);
+                        values.put(RecordEntry.COLUMN_ARMHOLE, measurement.armHole);
+                        values.put(RecordEntry.COLUMN_KNEE_LENGTH, measurement.kneeLength);
+                        values.put(RecordEntry.COLUMN_HALF_LENGTH, measurement.halfLength);
+                        values.put(RecordEntry.COLUMN_TROUSER_LENGTH, measurement.trouserLength);
+                        values.put(RecordEntry.COLUMN_THIGH, measurement.thigh);
+                        values.put(RecordEntry.COLUMN_TROUSER_BOTTOM, measurement.trouserBottom);
+
+                        Uri newUri = getContentResolver().insert(RecordEntry.CONTENT_URI, values);
+                        if (newUri == null) {
+                            Toast.makeText(MainActivity.this, getString(R.string.insert_fail), Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(MainActivity.this, getString(R.string.insert_successful), Toast.LENGTH_LONG).show();
                         }
-                    } else {
-                        Toast.makeText(MainActivity.this, "Null Reference", Toast.LENGTH_SHORT).show();
+                        count++;
+                        Toast.makeText(MainActivity.this, String.valueOf(dataSnapshot.getChildrenCount()) + " " + measurement.name, Toast.LENGTH_SHORT).show();
                     }
+                } else {
+                    Toast.makeText(MainActivity.this, "Null Reference", Toast.LENGTH_SHORT).show();
                 }
+            }
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                }
-            });
-        }
+            }
+        });
 
     }
 
 
-    private boolean checkInternetConnection(){
-        ConnectivityManager connectivityManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+    private boolean checkInternetConnection() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-        if(networkInfo != null && networkInfo.isConnectedOrConnecting()){
+        if (networkInfo != null && networkInfo.isConnectedOrConnecting()) {
             return true;
-        }else{
+        } else {
             LayoutInflater inflater = getLayoutInflater();
             View layout = inflater.inflate(R.layout.no_internet_connectivity_toast,
                     (ViewGroup) findViewById(R.id.custom_internet_availability_container));
@@ -470,11 +460,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         }
     }
 
-    private void openComplaintSuggestion(){
+    private void openComplaintSuggestion() {
         Intent intent = new Intent(getApplicationContext(), SuggestionComplaints.class);
         startActivity(intent);
     }
-
 
 
 }

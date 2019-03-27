@@ -3,7 +3,8 @@
     android:id="@+id/custom_internet_availability_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
+    android:background="@drawable/round_toast"
+
     android:orientation="vertical"
     android:padding="8dp">
 
