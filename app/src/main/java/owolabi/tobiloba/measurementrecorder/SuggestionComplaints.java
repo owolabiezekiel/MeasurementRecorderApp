@@ -1,5 +1,7 @@
 package owolabi.tobiloba.measurementrecorder;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -28,7 +30,7 @@ public class SuggestionComplaints extends AppCompatActivity {
         gmailButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getApplicationContext(), "Gmail button pressed", Toast.LENGTH_LONG).show();
+                composeEmail( new String[] {"eowolabi537@stu.ui.edu.ng", "owo.ezekiel@gmail.com"}, getString(R.string.complaint_suggestion_mail_topic));
             }
         });
 
@@ -52,5 +54,15 @@ public class SuggestionComplaints extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Whatsapp button pressed", Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    public void composeEmail(String[] addresses, String subject) {
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
+        intent.setData(Uri.parse("mailto:")); // only email apps should handle this
+        intent.putExtra(Intent.EXTRA_EMAIL, addresses);
+        intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
     }
 }
