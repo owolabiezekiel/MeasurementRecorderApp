@@ -32,6 +32,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -46,6 +49,8 @@ import owolabi.tobiloba.measurementrecorder.database.RecordContract.RecordEntry;
 import owolabi.tobiloba.measurementrecorder.database.RecordDBHelper;
 import owolabi.tobiloba.measurementrecorder.model.Measurement;
 
+import com.google.android.gms.ads.MobileAds;
+
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -59,11 +64,28 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private FirebaseUser mUser;
     private SwipeRefreshLayout swipeContainer;
     private ProgressDialog mProgress;
+    private AdView mAdView;
+    private InterstitialAd mInterstitialAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //Banner Ads
+        MobileAds.initialize(this, "ca-app-pub-3940256099942544~3347511713");
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
+
+        //Interstatial Ads
+        MobileAds.initialize(this,"ca-app-pub-3940256099942544~3347511713");
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+        mInterstitialAd.loadAd(new AdRequest.Builder().build());
+
+
         mDbHelper = new RecordDBHelper(this.getBaseContext());
         mProgress = new ProgressDialog(MainActivity.this);
         mProgress.setTitle("Hang on...");

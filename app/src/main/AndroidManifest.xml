@@ -11,6 +11,10 @@
         android:roundIcon="@mipmap/baseline_gesture_black_18dp"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-3940256099942544~3347511713"/>
         <activity android:name=".SuggestionComplaints"></activity>
         <activity
             android:name=".SplashScreen"
