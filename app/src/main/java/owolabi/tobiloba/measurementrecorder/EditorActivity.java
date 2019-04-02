@@ -10,7 +10,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
-import android.support.v4.app.ShareCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -26,6 +25,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 
 import owolabi.tobiloba.measurementrecorder.database.RecordContract.RecordEntry;
@@ -166,6 +166,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     };
 
     private AdView mAdView;
+    private InterstitialAd mInterstitialAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -177,6 +178,11 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mAdView = findViewById(R.id.editorViewAdView);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
+
+
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+        mInterstitialAd.loadAd(new AdRequest.Builder().build());
 
         Intent intent = getIntent();
         mCurrentRecordUri = intent.getData();
@@ -614,6 +620,9 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             // Respond to a click on the "Save" menu option
             case R.id.action_save:
                 saveRecord();
+                if (mInterstitialAd.isLoaded()){
+                    mInterstitialAd.show();
+                }
                 finish();
                 return true;
             // Respond to a click on the "Delete" menu option

@@ -8,6 +8,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -28,12 +31,27 @@ public class SignUpLogin extends AppCompatActivity {
     private FirebaseUser mUser;
     private GoogleSignInClient mGoogleSignInClient;
     private static final int RC_SIGN_IN = 101;
+    private AdView mAdView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up_login);
         setTitle(getString(R.string.signup_login_activity_title));
+
+
+        //Banner Ads
+        MobileAds.initialize(this, "ca-app-pub-3940256099942544~3347511713");
+        mAdView = findViewById(R.id.signUpTopAdView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
+        mAdView = findViewById(R.id.signUpBottomAdView);
+        adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
+
+
         googleSignInButton = (SignInButton) findViewById(R.id.login_with_google);
         mUser = null;
         mAuth = FirebaseAuth.getInstance();
@@ -100,7 +118,7 @@ public class SignUpLogin extends AppCompatActivity {
 
                         } else {
                             // If sign in fails, display a message to the user.
-                            Toast.makeText(SignUpLogin.this, "Could not create or log in account", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SignUpLogin.this, "Could not create or log in to account", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

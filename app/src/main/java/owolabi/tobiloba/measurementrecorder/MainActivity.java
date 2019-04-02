@@ -79,12 +79,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mAdView.loadAd(adRequest);
 
 
-        //Interstatial Ads
-        MobileAds.initialize(this,"ca-app-pub-3940256099942544~3347511713");
-        mInterstitialAd = new InterstitialAd(this);
-        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
-        mInterstitialAd.loadAd(new AdRequest.Builder().build());
-
 
         mDbHelper = new RecordDBHelper(this.getBaseContext());
         mProgress = new ProgressDialog(MainActivity.this);
@@ -122,9 +116,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 mUser = firebaseAuth.getCurrentUser();
                 if (mUser == null) {
-                    Toast.makeText(MainActivity.this, "No user is signed in", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(MainActivity.this, "No user is signed in", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(MainActivity.this, "Active account: " + mUser.getEmail(), Toast.LENGTH_LONG).show();
+                    //Toast.makeText(MainActivity.this, "Active account: " + mUser.getEmail(), Toast.LENGTH_LONG).show();
                 }
             }
         };
