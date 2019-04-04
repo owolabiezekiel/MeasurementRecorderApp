@@ -324,6 +324,28 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 TextUtils.isEmpty(clientName) || TextUtils.isEmpty(clientTitle)) {
             // Since no fields were modified, we can return early without creating a new pet.
             // No need to create ContentValues and no need to do any ContentProvider operations.
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage(R.string.record_not_saved_dialog_msg);
+            builder.setPositiveButton(R.string.action_continue_editing, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    if (dialog != null) {
+                        dialog.dismiss();
+                    }
+                }
+            });
+            builder.setNegativeButton(R.string.action_discard_editing, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    startActivity(new Intent(EditorActivity.this, MainActivity.class));
+                    if (mInterstitialAd.isLoaded()){
+                        mInterstitialAd.show();
+                    }
+                    finish();
+                }
+            });
+
+            // Create and show the AlertDialog
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
             Toast.makeText(this, getString(R.string.some_fields_are_empty), Toast.LENGTH_LONG).show();
             return;
         }
@@ -620,10 +642,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             // Respond to a click on the "Save" menu option
             case R.id.action_save:
                 saveRecord();
-                if (mInterstitialAd.isLoaded()){
-                    mInterstitialAd.show();
-                }
-                finish();
                 return true;
             // Respond to a click on the "Delete" menu option
             case R.id.action_delete:
