@@ -9,8 +9,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.telephony.PhoneNumberUtils;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
+
+import com.crashlytics.android.Crashlytics;
 
 import java.net.URLEncoder;
 
@@ -31,6 +34,20 @@ public class SuggestionComplaints extends AppCompatActivity {
         twitterButton = findViewById(R.id.twitterButton);
         instagramButton = findViewById(R.id.instagramButton);
         whatsappButton = findViewById(R.id.whatsappButton);
+
+
+       /* Button crashButton = new Button(this);
+        crashButton.setText("Crash!");
+        crashButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                Crashlytics.getInstance().crash(); // Force a crash
+            }
+        });
+
+        addContentView(crashButton, new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));*/
+
 
 
         gmailButton.setOnClickListener(new View.OnClickListener() {
