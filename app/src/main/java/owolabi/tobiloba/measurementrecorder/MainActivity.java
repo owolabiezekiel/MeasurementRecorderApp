@@ -214,6 +214,30 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             alertDialog.show();
         }
     }
+
+
+    private void showUploadConfirmationDialog() {
+        if (checkInternetConnection()) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage(R.string.upload_to_cloud_dialog_msg);
+            builder.setPositiveButton(R.string.action_download_from_cloud, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    uploadDatabaseToCloud();
+                }
+            });
+            builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    if (dialog != null) {
+                        dialog.dismiss();
+                    }
+                }
+            });
+
+            // Create and show the AlertDialog
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
+        }
+    }
     //--------------------------------------------------------------------end of confirmation dialogs-----------------------------------------------------------------
 
     private void signUpOrSignIn() {
@@ -271,7 +295,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 return true;
 
             case R.id.action_sync_record_to_cloud:
-                uploadDatabaseToCloud();
+                showUploadConfirmationDialog();
                 return true;
 
             case R.id.action_sign_in:
@@ -439,7 +463,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                             Toast.makeText(MainActivity.this, getString(R.string.insert_successful), Toast.LENGTH_LONG).show();
                         }
                         count++;
-                        Toast.makeText(MainActivity.this, String.valueOf(dataSnapshot.getChildrenCount()) + " " + measurement.name, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(MainActivity.this, String.valueOf(dataSnapshot.getChildrenCount()) + " " + measurement.name, Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     Toast.makeText(MainActivity.this, "Null Reference", Toast.LENGTH_SHORT).show();

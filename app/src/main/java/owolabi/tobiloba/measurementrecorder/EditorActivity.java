@@ -351,6 +351,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         }
 
 
+
         ContentValues values = new ContentValues();
 
         values.put(RecordEntry.COLUMN_CLIENT_TITLE, clientTitle);
@@ -506,6 +507,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 Toast.makeText(this, getString(R.string.insert_fail), Toast.LENGTH_LONG).show();
             } else {
                 Toast.makeText(this, getString(R.string.insert_successful), Toast.LENGTH_LONG).show();
+                startActivity(new Intent(EditorActivity.this, MainActivity.class));
             }
         } else {
             // Otherwise this is an EXISTING pet, so update the pet with content URI: mCurrentRecordUri
