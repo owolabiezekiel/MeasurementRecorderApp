@@ -28,16 +28,7 @@
             android:padding="16sp">
 
 
-            <TextView
-                android:id="@+id/title"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:fontFamily="sans-serif-medium"
-                android:gravity="center_vertical"
-                android:textAppearance="?android:textAppearanceMedium"
-                android:textColor="#2B3D4D"
-                android:textStyle="bold" />
+
 
             <TextView
                 android:id="@+id/name"

@@ -21,7 +21,6 @@ public class RecordDBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String SQL_CREATE_RECORDS_TABLE = "CREATE TABLE " + RecordEntry.TABLE_NAME + "("
                 + RecordEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + RecordEntry.COLUMN_CLIENT_TITLE + " TEXT NOT NULL, "
                 + RecordEntry.COLUMN_CLIENT_NAME + " TEXT NOT NULL, "
                 + RecordEntry.COLUMN_CLIENT_GENDER+ " INTEGER NOT NULL, "
                 + RecordEntry.COLUMN_HEAD + " REAL,"

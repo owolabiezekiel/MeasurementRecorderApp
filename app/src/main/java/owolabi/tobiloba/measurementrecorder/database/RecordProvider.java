@@ -84,7 +84,6 @@ public class RecordProvider extends ContentProvider {
     }
 
     private Uri insertPet(Uri uri, ContentValues values) {
-        String title = values.getAsString(RecordEntry.COLUMN_CLIENT_TITLE);
         String name = values.getAsString(RecordEntry.COLUMN_CLIENT_NAME);
         String gender = values.getAsString(RecordEntry.COLUMN_CLIENT_GENDER);
         int head = values.getAsInteger(RecordEntry.COLUMN_HEAD);
@@ -174,16 +173,7 @@ public class RecordProvider extends ContentProvider {
 
 
     private int updatePet(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-        // If the {@link RecordEntry#COLUMN_CLIENT_TITLE} key is present,
-        // check that the name value is not null.
-        if (values.containsKey(RecordEntry.COLUMN_CLIENT_TITLE)) {
-            String title = values.getAsString(RecordEntry.COLUMN_CLIENT_TITLE);
-            if (title == null) {
-                throw new IllegalArgumentException("Client requires a title");
-            }
-        }
-
-        // If the {@link PetEntry#COLUMN_PET_GENDER} key is present,
+       // If the {@link PetEntry#COLUMN_PET_GENDER} key is present,
         // check that the gender value is valid.
         if (values.containsKey(RecordEntry.COLUMN_CLIENT_NAME)) {
             String name = values.getAsString(RecordEntry.COLUMN_CLIENT_NAME);

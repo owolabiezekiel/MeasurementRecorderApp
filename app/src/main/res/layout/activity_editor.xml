@@ -64,12 +64,7 @@
                 android:orientation="vertical"
                 android:paddingLeft="4dp">
 
-                <!-- Name field -->
-                <EditText
-                    android:id="@+id/edit_client_title"
-                    style="@style/EditorFieldStyle"
-                    android:hint="@string/hint_client_title"
-                    android:inputType="textCapWords" />
+
 
                 <!-- Breed field -->
                 <EditText

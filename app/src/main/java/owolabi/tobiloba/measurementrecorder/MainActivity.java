@@ -324,7 +324,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         String[] projection = {
                 RecordEntry._ID,
-                RecordEntry.COLUMN_CLIENT_TITLE,
                 RecordEntry.COLUMN_CLIENT_NAME,
                 RecordEntry.COLUMN_CLIENT_GENDER
         };
@@ -378,7 +377,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             ArrayList<Measurement> measurementArrayList = new ArrayList<>();
             if (cursor.moveToFirst()) {
                 do {
-                    String title = cursor.getString(cursor.getColumnIndex(RecordEntry.COLUMN_CLIENT_TITLE));
                     String name = cursor.getString(cursor.getColumnIndex(RecordEntry.COLUMN_CLIENT_NAME));
                     int gender = cursor.getInt(cursor.getColumnIndex(RecordEntry.COLUMN_CLIENT_GENDER));
                     float head = cursor.getFloat(cursor.getColumnIndex(RecordEntry.COLUMN_HEAD));
@@ -403,7 +401,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                     float trouserBottom = cursor.getFloat(cursor.getColumnIndex(RecordEntry.COLUMN_TROUSER_BOTTOM));
 
 
-                    Measurement measurement = new Measurement(title, name, gender, head, neck, neckline, bustpoint, underbust, bust, waist, hip,
+                    Measurement measurement = new Measurement(name, gender, head, neck, neckline, bustpoint, underbust, bust, waist, hip,
                             shoulder, chest, gownlength, blouselength, shortGownLength, sleeveLength, armHole, kneeLength, halfLength, trouserLength,
                             thigh, trouserBottom);
                     measurementArrayList.add(measurement);
@@ -432,7 +430,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                         Measurement measurement = dt.getValue(Measurement.class);
                         ContentValues values = new ContentValues();
 
-                        values.put(RecordEntry.COLUMN_CLIENT_TITLE, measurement.title);
                         values.put(RecordEntry.COLUMN_CLIENT_NAME, measurement.name);
                         values.put(RecordEntry.COLUMN_CLIENT_GENDER, measurement.gender);
                         values.put(RecordEntry.COLUMN_HEAD, measurement.head);

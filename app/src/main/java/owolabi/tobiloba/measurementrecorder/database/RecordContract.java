@@ -27,7 +27,6 @@ public class RecordContract {
 
         public static final String TABLE_NAME = "records";
         public static final String _ID = BaseColumns._ID;
-        public static final String COLUMN_CLIENT_TITLE = "title";
         public static final String COLUMN_CLIENT_NAME = "name";
         public static final String COLUMN_CLIENT_GENDER = "gender";
         public static final String COLUMN_HEAD = "head";

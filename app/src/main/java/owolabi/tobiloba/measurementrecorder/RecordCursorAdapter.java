@@ -31,25 +31,20 @@ public class RecordCursorAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         // Find individual views that we want to modify in the list item layout
-        TextView titleTextView = (TextView) view.findViewById(R.id.title);
         TextView nameTextView = (TextView) view.findViewById(R.id.name);
         ImageView displayImage = (ImageView) view.findViewById(R.id.image);
 
 
-        // Find the columns of pet attributes that we're interested in
-        int titleColumnIndex = cursor.getColumnIndex(RecordEntry.COLUMN_CLIENT_TITLE);
+        // Find the columns of measurement attributes that we're interested in
         int nameColumnIndex = cursor.getColumnIndex(RecordEntry.COLUMN_CLIENT_NAME);
         int genderColumnIndex = cursor.getColumnIndex(RecordEntry.COLUMN_CLIENT_GENDER);
 
 
         // Read the pet attributes from the Cursor for the current pet
-        String clientTitle = cursor.getString(titleColumnIndex);
+
         String clientName = cursor.getString(nameColumnIndex);
         int clientGender = cursor.getInt(genderColumnIndex);
 
-        if (TextUtils.isEmpty(clientTitle)) {
-            clientTitle = context.getString(R.string.unknown_title);
-        }
 
         //check the client gender and set the approriate image
         // set to a question mark png if the gender is unknown
@@ -61,8 +56,7 @@ public class RecordCursorAdapter extends CursorAdapter {
             displayImage.setImageResource(R.drawable.family_father);
         }
 
-        // Update the TextViews with the attributes for the current pet
-        titleTextView.setText(clientTitle);
+        // Update the TextViews with the attributes for the current record
         nameTextView.setText(clientName);
     }
 }

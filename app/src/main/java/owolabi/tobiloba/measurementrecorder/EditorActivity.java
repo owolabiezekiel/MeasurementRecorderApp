@@ -55,10 +55,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
      */
     private EditText mNameEditText;
     /**
-     * EditText field to enter the clients title
-     */
-    private EditText mTitleEditText;
-    /**
      * EditText field to enter the clients's head
      */
     private EditText mHeadEditText;
@@ -197,7 +193,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         }
 
         // Find all relevant views that we will need to read user input from
-        mTitleEditText = (EditText) findViewById(R.id.edit_client_title);
         mNameEditText = (EditText) findViewById(R.id.edit_client_name);
         mHeadEditText = (EditText) findViewById(R.id.edit_head);
         mNeckEditText = (EditText) findViewById(R.id.edit_neck);
@@ -226,7 +221,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         // has touched or modified them. This will let us know if there are unsaved changes
         // or not, if the user tries to leave the editor without saving.
         mNameEditText.setOnTouchListener(mTouchListener);
-        mTitleEditText.setOnTouchListener(mTouchListener);
         mNeckLineEditText.setOnTouchListener(mTouchListener);
         mHeadEditText.setOnTouchListener(mTouchListener);
         mNeckEditText.setOnTouchListener(mTouchListener);
@@ -296,7 +290,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
     private void saveRecord() {
         String clientName = mNameEditText.getText().toString().trim();
-        String clientTitle = mTitleEditText.getText().toString().trim();
         String headString = mHeadEditText.getText().toString().trim();
         String neckString = mNeckEditText.getText().toString().trim();
         String neckLineString = mNeckLineEditText.getText().toString().trim();
@@ -321,7 +314,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         // Check if this is supposed to be a new pet
         // and check if all the fields in the editor are blank
         if (mCurrentRecordUri == null &&
-                TextUtils.isEmpty(clientName) || TextUtils.isEmpty(clientTitle)) {
+                TextUtils.isEmpty(clientName)) {
             // Since no fields were modified, we can return early without creating a new pet.
             // No need to create ContentValues and no need to do any ContentProvider operations.
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -354,7 +347,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
         ContentValues values = new ContentValues();
 
-        values.put(RecordEntry.COLUMN_CLIENT_TITLE, clientTitle);
         values.put(RecordEntry.COLUMN_CLIENT_NAME, clientName);
         values.put(RecordEntry.COLUMN_CLIENT_GENDER, mGender);
 
@@ -688,7 +680,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
      */
     private void createShareIntent() {
         String clientName = mNameEditText.getText().toString().trim();
-        String clientTitle = mTitleEditText.getText().toString().trim();
         String headString = mHeadEditText.getText().toString().trim();
         String neckString = mNeckEditText.getText().toString().trim();
         String neckLineString = mNeckLineEditText.getText().toString().trim();
@@ -713,7 +704,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.setType("text/plain");
         String recordDetails = "Name:\t" + clientName +
-                "\nTitle\t" + clientTitle +
                 "\nHead: \t" + headString +
                 "\nNeck: \t" + neckString +
                 "\nNeckline: \t" + neckLineString +
@@ -773,7 +763,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         // all columns from the pet table
         String[] projection = {
                 RecordEntry._ID,
-                RecordEntry.COLUMN_CLIENT_TITLE,
                 RecordEntry.COLUMN_CLIENT_NAME,
                 RecordEntry.COLUMN_CLIENT_GENDER,
                 RecordEntry.COLUMN_HEAD,
@@ -817,7 +806,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         // (This should be the only row in the cursor)
         if (cursor.moveToFirst()) {
             // Find the columns of pet attributes that we're interested in
-            int titleColumnIndex = cursor.getColumnIndex(RecordEntry.COLUMN_CLIENT_TITLE);
             int nameColumnIndex = cursor.getColumnIndex(RecordEntry.COLUMN_CLIENT_NAME);
             int genderColumnIndex = cursor.getColumnIndex(RecordEntry.COLUMN_CLIENT_GENDER);
             int headColumnIndex = cursor.getColumnIndex(RecordEntry.COLUMN_HEAD);
@@ -842,7 +830,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             int trouserBottomColumnIndex = cursor.getColumnIndex(RecordEntry.COLUMN_TROUSER_BOTTOM);
 
             // Extract out the value from the Cursor for the given column index
-            String title = cursor.getString(titleColumnIndex);
             String name = cursor.getString(nameColumnIndex);
             int gender = cursor.getInt(genderColumnIndex);
             float head = cursor.getFloat(headColumnIndex);
@@ -867,7 +854,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             float trouserBottom = cursor.getFloat(trouserBottomColumnIndex);
 
             // Update the views on the screen with the values from the database
-            mTitleEditText.setText(title);
             mNameEditText.setText(name);
             if (head > 0.0)
                 mHeadEditText.setText(Float.toString(head));
@@ -933,7 +919,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     public void onLoaderReset(Loader<Cursor> loader) {
         // If the loader is invalidated, clear out all the data from the input fields.
         mNameEditText.setText("");
-        mTitleEditText.setText("");
         mNeckEditText.setText("");
         mHeadEditText.setText("");
         mNeckLineEditText.setText("");

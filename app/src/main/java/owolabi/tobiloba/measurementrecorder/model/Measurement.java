@@ -1,7 +1,6 @@
 package owolabi.tobiloba.measurementrecorder.model;
 
 public class Measurement {
-    public String title;
     public String name;
     public int gender;
     public float head;
@@ -30,10 +29,9 @@ public class Measurement {
 
     }
 
-    public Measurement(String title, String name, int gender, float head, float neck, float neckline, float bustpoint, float underbust, float bust, float waist,
+    public Measurement(String name, int gender, float head, float neck, float neckline, float bustpoint, float underbust, float bust, float waist,
                        float hip, float shoulder, float chest, float gownlength, float blouselength, float shortGownLength, float sleeveLength, float armHole, float kneeLength,
                        float halfLength, float trouserLength, float thigh, float trouserBottom) {
-        this.title = title;
         this.name = name;
         this.gender = gender;
         this.head = head;
