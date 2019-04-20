@@ -204,5 +204,11 @@
 
     <string name="complaint_suggestion_mail_topic">Suggestion/Complaint About The Measurement App</string>
 
+    <string name="long_hold_menu_delete"> Delete </string>
+
+    <string name="main_activity_long_press_delete">Delete Record</string>
+
+    <string name="main_activity_long_press_delete_message">Are you sure you want to delete this record?</string>
+
 
 </resources>

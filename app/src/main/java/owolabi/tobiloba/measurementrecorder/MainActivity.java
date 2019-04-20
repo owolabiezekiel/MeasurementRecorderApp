@@ -66,6 +66,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private ProgressDialog mProgress;
     private AdView mAdView;
     private InterstitialAd mInterstitialAd;
+    private long currentSelectedID;
+    private long currentSelectedROW;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +79,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mAdView = findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
-
 
 
         mDbHelper = new RecordDBHelper(this.getBaseContext());
@@ -135,13 +136,23 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         });
 
 
-        ListView recordListView = (ListView) findViewById(R.id.list);
+        final ListView recordListView = (ListView) findViewById(R.id.list);
         // Find and set empty view on the ListView, so that it only shows when the list has 0 items.
         View emptyView = findViewById(R.id.empty_view);
         recordListView.setEmptyView(emptyView);
 
         mCursorAdapter = new RecordCursorAdapter(this, null);
         recordListView.setAdapter(mCursorAdapter);
+
+        //Add Listener for long press on a list item to display the delete option
+        recordListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long id) {
+                Uri currentRecord = ContentUris.withAppendedId(RecordEntry.CONTENT_URI, id);
+                showSingleDeleteConfirmationDialog(currentRecord);
+                return true;
+            }
+        });
 
         recordListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -152,6 +163,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 startActivity(intent);
             }
         });
+
         getLoaderManager().initLoader(RECORD_LOADER, null, this);
     }
 
@@ -166,20 +178,15 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     //--------------------------------------------------------------------confirmation dialogs--------------------------------------------------------------------
     private void showDeleteConfirmationDialog() {
-        // Create an AlertDialog.Builder and set the message, and click listeners
-        // for the positive and negative buttons on the dialog.
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(R.string.delete_all_records_dialog_msg);
         builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                // User clicked the "Delete" button, so delete the pet.
-                deleteAllRecords();
+
             }
         });
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                // User clicked the "Cancel" button, so dismiss the dialog
-                // and continue editing the pet.
                 if (dialog != null) {
                     dialog.dismiss();
                 }
@@ -187,6 +194,28 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         });
 
         // Create and show the AlertDialog
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+
+    private void showSingleDeleteConfirmationDialog(final Uri uri){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.main_activity_long_press_delete);
+        builder.setMessage(R.string.delete_all_records_dialog_msg);
+        builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                getContentResolver().delete(uri, null, null);
+            }
+        });
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                if (dialog != null) {
+                    dialog.dismiss();
+                }
+            }
+        });
+
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
