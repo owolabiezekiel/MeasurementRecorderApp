@@ -210,5 +210,6 @@
 
     <string name="main_activity_long_press_delete_message">Are you sure you want to delete this record?</string>
 
+    <string name="splash_screen_image_description">Splash screen image</string>
 
 </resources>

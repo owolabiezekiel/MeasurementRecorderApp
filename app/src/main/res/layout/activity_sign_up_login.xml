@@ -14,7 +14,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="8dp"
         ads:adSize="BANNER"
-        ads:adUnitId="ca-app-pub-3940256099942544/6300978111"
+        ads:adUnitId="ca-app-pub-9965245858402334/8868638606"
         ads:layout_constraintBottom_toBottomOf="parent"
         tools:layout_editor_absoluteX="34dp"></com.google.android.gms.ads.AdView>
 
@@ -41,7 +41,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="8dp"
         ads:adSize="BANNER"
-        ads:adUnitId="ca-app-pub-3940256099942544/6300978111"
+        ads:adUnitId="ca-app-pub-9965245858402334/1313334794"
         ads:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="0dp"></com.google.android.gms.ads.AdView>
 

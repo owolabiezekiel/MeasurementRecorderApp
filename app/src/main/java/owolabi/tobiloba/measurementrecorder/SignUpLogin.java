@@ -41,7 +41,7 @@ public class SignUpLogin extends AppCompatActivity {
 
 
         //Banner Ads
-        MobileAds.initialize(this, "ca-app-pub-3940256099942544~3347511713");
+        MobileAds.initialize(this, "ca-app-pub-9965245858402334~6725398448");
         mAdView = findViewById(R.id.signUpTopAdView);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
