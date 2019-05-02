@@ -182,7 +182,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         builder.setMessage(R.string.delete_all_records_dialog_msg);
         builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-
+                deleteAllRecords();
             }
         });
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {

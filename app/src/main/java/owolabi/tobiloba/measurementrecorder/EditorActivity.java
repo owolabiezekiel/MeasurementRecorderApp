@@ -177,7 +177,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
 
         mInterstitialAd = new InterstitialAd(this);
-        mInterstitialAd.setAdUnitId("ca-app-pub-9965245858402334/1313334794");
+        mInterstitialAd.setAdUnitId("ca-app-pub-9965245858402334/5663643347");
         mInterstitialAd.loadAd(new AdRequest.Builder().build());
 
         Intent intent = getIntent();
@@ -500,6 +500,10 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             } else {
                 Toast.makeText(this, getString(R.string.insert_successful), Toast.LENGTH_LONG).show();
                 startActivity(new Intent(EditorActivity.this, MainActivity.class));
+                if (mInterstitialAd.isLoaded()){
+                    mInterstitialAd.show();
+                }
+                finish();
             }
         } else {
             // Otherwise this is an EXISTING pet, so update the pet with content URI: mCurrentRecordUri
