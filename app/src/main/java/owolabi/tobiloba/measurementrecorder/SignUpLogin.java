@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -32,12 +33,21 @@ public class SignUpLogin extends AppCompatActivity {
     private GoogleSignInClient mGoogleSignInClient;
     private static final int RC_SIGN_IN = 101;
     private AdView mAdView;
+    private InterstitialAd mInterstitialAd;
+    private boolean flag = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up_login);
         setTitle(getString(R.string.signup_login_activity_title));
+        flag = true;
+
+
+        MobileAds.initialize(this, "ca-app-pub-9965245858402334~6725398448");
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId("ca-app-pub-9965245858402334/5663643347");
+        mInterstitialAd.loadAd(new AdRequest.Builder().build());
 
 
         //Banner Ads
@@ -70,6 +80,17 @@ public class SignUpLogin extends AppCompatActivity {
         });
 
 
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        if(!flag){
+            if (mInterstitialAd.isLoaded()){
+                mInterstitialAd.show();
+            }
+            flag = false;
+        }
     }
 
     private void signIn() {
@@ -113,6 +134,9 @@ public class SignUpLogin extends AppCompatActivity {
                             Toast.makeText(SignUpLogin.this, mUser.getDisplayName() + mUser.getEmail() + mUser.getPhoneNumber(), Toast.LENGTH_LONG).show();
                             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                             startActivity(intent);
+                            if (mInterstitialAd.isLoaded()){
+                                mInterstitialAd.show();
+                            }
                             finish();
                             Toast.makeText(getApplicationContext(), "User Logged in successfully. Swipe down to refresh", Toast.LENGTH_LONG).show();
 
@@ -123,5 +147,6 @@ public class SignUpLogin extends AppCompatActivity {
                     }
                 });
     }
+
 
 }

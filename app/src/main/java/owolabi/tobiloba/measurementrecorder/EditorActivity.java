@@ -39,6 +39,8 @@ import owolabi.tobiloba.measurementrecorder.database.RecordContract.RecordEntry;
  */
 public class EditorActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
+    boolean flag = false;
+
     /**
      * Identifier for the record data loader
      */
@@ -169,6 +171,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
 
+        flag = true;
+
         //Banner Ads
         MobileAds.initialize(this, "ca-app-pub-9965245858402334~6725398448");
         mAdView = findViewById(R.id.editorViewAdView);
@@ -246,6 +250,18 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mGenderSpinner.setOnTouchListener(mTouchListener);
 
         setupSpinner();
+    }
+
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        if(!flag){
+            if (mInterstitialAd.isLoaded()){
+                mInterstitialAd.show();
+            }
+            flag = false;
+        }
     }
 
     /**
@@ -329,7 +345,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             builder.setNegativeButton(R.string.action_discard_editing, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
                     startActivity(new Intent(EditorActivity.this, MainActivity.class));
-                    if (mInterstitialAd.isLoaded()){
+                    if (mInterstitialAd.isLoaded()) {
                         mInterstitialAd.show();
                     }
                     finish();
@@ -340,7 +356,9 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             AlertDialog alertDialog = builder.create();
             alertDialog.show();
             Toast.makeText(this, getString(R.string.some_fields_are_empty), Toast.LENGTH_LONG).show();
+            finish();
             return;
+
         }
 
 

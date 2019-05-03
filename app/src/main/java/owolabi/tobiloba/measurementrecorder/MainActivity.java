@@ -66,19 +66,24 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private ProgressDialog mProgress;
     private AdView mAdView;
     private InterstitialAd mInterstitialAd;
-    private long currentSelectedID;
-    private long currentSelectedROW;
+    private boolean flag = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        flag = true;
 
         //Banner Ads
         MobileAds.initialize(this, "ca-app-pub-9965245858402334~6725398448");
         mAdView = findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
+
+
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId("ca-app-pub-9965245858402334/5663643347");
+        mInterstitialAd.loadAd(new AdRequest.Builder().build());
 
 
         mDbHelper = new RecordDBHelper(this.getBaseContext());
@@ -167,6 +172,16 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         getLoaderManager().initLoader(RECORD_LOADER, null, this);
     }
 
+    @Override
+    protected void onResume(){
+        super.onResume();
+        if(!flag){
+            if (mInterstitialAd.isLoaded()){
+                mInterstitialAd.show();
+            }
+            flag = false;
+        }
+    }
 
     /**
      * Helper method to delete all records in the database.
