@@ -212,4 +212,6 @@
 
     <string name="splash_screen_image_description">Splash screen image</string>
 
+    <string name="search_hint">Search measurement...</string>
+
 </resources>

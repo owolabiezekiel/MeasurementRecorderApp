@@ -9,7 +9,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import owolabi.tobiloba.measurementrecorder.database.RecordContract.RecordEntry;
+import owolabi.tobiloba.measurementrecorder.model.Measurement;
 
 /**
  * Created by TOBILOBA on 10/10/2017.
@@ -56,6 +60,7 @@ public class RecordProvider extends ContentProvider {
         cursor.setNotificationUri(getContext().getContentResolver(), uri);
         return cursor;
     }
+
 
 
     @Override

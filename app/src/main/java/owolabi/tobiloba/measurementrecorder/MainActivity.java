@@ -20,14 +20,18 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,9 +48,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import owolabi.tobiloba.measurementrecorder.database.RecordContract.RecordEntry;
 import owolabi.tobiloba.measurementrecorder.database.RecordDBHelper;
+import owolabi.tobiloba.measurementrecorder.database.RecordProvider;
 import owolabi.tobiloba.measurementrecorder.model.Measurement;
 
 import com.google.android.gms.ads.MobileAds;
@@ -64,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private FirebaseUser mUser;
     private SwipeRefreshLayout swipeContainer;
     private ProgressDialog mProgress;
+    private EditText searchEditText;
     private AdView mAdView;
     private InterstitialAd mInterstitialAd;
     private boolean flag = false;
@@ -72,6 +79,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        searchEditText = findViewById(R.id.search_edit_text);
         flag = true;
 
         //Banner Ads
@@ -97,10 +106,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         //Instantiate Firebase libraries needed-------------------------------------------------------------------
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
-        mDatabase = FirebaseDatabase.getInstance();
-        //mDatabaseReference = mDatabase.getReference("users/" + mUser.getUid());
+        mDatabase = FirebaseDatabase.getInstance();//mDatabaseReference = mDatabase.getReference("users/" + mUser.getUid());
 
-        //--------------------------------------------------------------------------------------------------------
 
 
         //  Check Firebase Auth state to set menu items accordingly-----------------------------------------------
@@ -114,7 +121,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 swipeContainer.setRefreshing(false);
             }
         });
-        //--------------------------------------------------------------------------------------------------------
 
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -131,7 +137,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
 
         // Setup FAB to open EditorActivity
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -141,7 +147,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         });
 
 
-        final ListView recordListView = (ListView) findViewById(R.id.list);
+        final ListView recordListView = findViewById(R.id.list);
         // Find and set empty view on the ListView, so that it only shows when the list has 0 items.
         View emptyView = findViewById(R.id.empty_view);
         recordListView.setEmptyView(emptyView);
@@ -156,6 +162,42 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 Uri currentRecord = ContentUris.withAppendedId(RecordEntry.CONTENT_URI, id);
                 showSingleDeleteConfirmationDialog(currentRecord);
                 return true;
+            }
+        });
+
+
+        searchEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                SQLiteDatabase database = mDbHelper.getReadableDatabase();
+                //String searchQuery = "SELECT * FROM records WHERE name LIKE ? ", new String[] { "%" + searchEditText.getText().toString() + "%" };
+                Cursor cursor = database.rawQuery("SELECT * FROM records WHERE name LIKE ? ", new String[] { "%" + searchEditText.getText().toString() + "%" });
+                mCursorAdapter = new RecordCursorAdapter(MainActivity.this, cursor);
+                recordListView.setAdapter(mCursorAdapter);
+
+                if(cursor.getCount() <= 0){
+                    LayoutInflater inflater = getLayoutInflater();
+                    View layout = inflater.inflate(R.layout.no_internet_connectivity_toast,
+                            (ViewGroup) findViewById(R.id.custom_internet_availability_container));
+                    TextView text = layout.findViewById(R.id.connection_text);
+                    text.setText("No record found");
+
+                    Toast toast = new Toast(getApplicationContext());
+                    toast.setGravity(Gravity.CENTER_HORIZONTAL, 0, 0);
+                    toast.setDuration(Toast.LENGTH_LONG);
+                    toast.setView(layout);
+                    toast.show();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
             }
         });
 

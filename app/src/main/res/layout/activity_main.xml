@@ -22,16 +22,33 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/adLayout"
-        android:orientation="horizontal">
+        android:orientation="vertical">
         <com.google.android.gms.ads.AdView
             android:id="@+id/adView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
             ads:adSize="BANNER"
             ads:adUnitId="ca-app-pub-9965245858402334/1313334794"></com.google.android.gms.ads.AdView>
+
+        <EditText
+            android:id="@+id/search_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edittext_round"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:textAlignment="center"
+            android:textSize="15dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:hint="@string/search_hint"
+            />
     </LinearLayout>
+
 
 
 
