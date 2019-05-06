@@ -15,6 +15,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "219518572374-4183k8ajeph38nqmvrpn34vq5r0ip7jq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "owolabi.tobiloba.measurementrecorder",
+            "certificate_hash": "411825d3afd53c1ffb4a8ed8f6dfe47a52bd93a2"
+          }
+        },
+        {
+          "client_id": "219518572374-8r1ukj785c2nfco6rjkf4nbo3h1s9sno.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "owolabi.tobiloba.measurementrecorder",
+            "certificate_hash": "2b1bbce574975f44fb3a37d0737322ebc46b8a7d"
+          }
+        },
+        {
           "client_id": "219518572374-2ku9v9u4ei15rfp0g14uljua7fjeqevq.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -33,22 +49,16 @@
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 2,
           "other_platform_oauth_client": [
             {
               "client_id": "219518572374-1gtsarsa3op45cqg5ogc5ud0e5dbd4jo.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
-        },
-        "ads_service": {
-          "status": 2
         }
-      }
+      },
+      "admob_app_id": "ca-app-pub-9965245858402334~6725398448"
     }
   ],
   "configuration_version": "1"

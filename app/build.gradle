@@ -9,8 +9,8 @@ android {
         applicationId "owolabi.tobiloba.measurementrecorder"
         minSdkVersion 15
         targetSdkVersion 26
-        versionCode 4
-        versionName "1.3"
+        versionCode 7
+        versionName "1.7"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

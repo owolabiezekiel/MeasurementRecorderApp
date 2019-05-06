@@ -36,6 +36,7 @@ public class SignUpLogin extends AppCompatActivity {
     private InterstitialAd mInterstitialAd;
     private boolean flag = false;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,13 +46,6 @@ public class SignUpLogin extends AppCompatActivity {
 
 
         MobileAds.initialize(this, "ca-app-pub-9965245858402334~6725398448");
-        mInterstitialAd = new InterstitialAd(this);
-        mInterstitialAd.setAdUnitId("ca-app-pub-9965245858402334/5663643347");
-        mInterstitialAd.loadAd(new AdRequest.Builder().build());
-
-
-        //Banner Ads
-        MobileAds.initialize(this, "ca-app-pub-9965245858402334~6725398448");
         mAdView = findViewById(R.id.signUpTopAdView);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
@@ -60,9 +54,12 @@ public class SignUpLogin extends AppCompatActivity {
         adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
 
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId("ca-app-pub-9965245858402334/5663643347");
+        mInterstitialAd.loadAd(new AdRequest.Builder().build());
 
 
-        googleSignInButton = (SignInButton) findViewById(R.id.login_with_google);
+        googleSignInButton = findViewById(R.id.login_with_google);
         mUser = null;
         mAuth = FirebaseAuth.getInstance();
 
@@ -78,9 +75,8 @@ public class SignUpLogin extends AppCompatActivity {
                 signIn();
             }
         });
+    } // end of onCreate
 
-
-    }
 
     @Override
     protected void onResume(){
@@ -92,6 +88,7 @@ public class SignUpLogin extends AppCompatActivity {
             flag = false;
         }
     }
+
 
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
@@ -118,6 +115,7 @@ public class SignUpLogin extends AppCompatActivity {
 
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
+
             }
         }
     }
@@ -134,10 +132,10 @@ public class SignUpLogin extends AppCompatActivity {
                             Toast.makeText(SignUpLogin.this, mUser.getDisplayName() + mUser.getEmail() + mUser.getPhoneNumber(), Toast.LENGTH_LONG).show();
                             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                             startActivity(intent);
+                            finish();
                             if (mInterstitialAd.isLoaded()){
                                 mInterstitialAd.show();
                             }
-                            finish();
                             Toast.makeText(getApplicationContext(), "User Logged in successfully. Swipe down to refresh", Toast.LENGTH_LONG).show();
 
                         } else {
