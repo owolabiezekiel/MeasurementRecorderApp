@@ -24,7 +24,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -48,7 +47,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import owolabi.tobiloba.measurementrecorder.database.RecordContract.RecordEntry;
 import owolabi.tobiloba.measurementrecorder.database.RecordDBHelper;
@@ -103,15 +101,15 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mProgress.setIndeterminate(true);
 
 
-        //Instantiate Firebase libraries needed-------------------------------------------------------------------
+        //Instantiate Firebase libraries needed
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
         mDatabase = FirebaseDatabase.getInstance();//mDatabaseReference = mDatabase.getReference("users/" + mUser.getUid());
 
 
 
-        //  Check Firebase Auth state to set menu items accordingly-----------------------------------------------
-        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
+        //  Check Firebase Auth state to set menu items accordingly
+        swipeContainer = findViewById(R.id.swiperefresh);
         swipeContainer.setColorSchemeResources(android.R.color.holo_blue_dark);
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -128,9 +126,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 mUser = firebaseAuth.getCurrentUser();
                 if (mUser == null) {
-                    //Toast.makeText(MainActivity.this, "No user is signed in", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "No user is signed in", Toast.LENGTH_SHORT).show();
                 } else {
-                    //Toast.makeText(MainActivity.this, "Active account: " + mUser.getEmail(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.this, "Active account: " + mUser.getEmail(), Toast.LENGTH_LONG).show();
                 }
             }
         };
@@ -148,6 +146,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
 
         final ListView recordListView = findViewById(R.id.list);
+
         // Find and set empty view on the ListView, so that it only shows when the list has 0 items.
         View emptyView = findViewById(R.id.empty_view);
         recordListView.setEmptyView(emptyView);
@@ -175,7 +174,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 SQLiteDatabase database = mDbHelper.getReadableDatabase();
-                //String searchQuery = "SELECT * FROM records WHERE name LIKE ? ", new String[] { "%" + searchEditText.getText().toString() + "%" };
                 Cursor cursor = database.rawQuery("SELECT * FROM records WHERE name LIKE ? ", new String[] { "%" + searchEditText.getText().toString() + "%" });
                 mCursorAdapter = new RecordCursorAdapter(MainActivity.this, cursor);
                 recordListView.setAdapter(mCursorAdapter);
@@ -210,9 +208,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 startActivity(intent);
             }
         });
-
         getLoaderManager().initLoader(RECORD_LOADER, null, this);
     }
+
 
     @Override
     protected void onResume(){
@@ -225,6 +223,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         }
     }
 
+
     /**
      * Helper method to delete all records in the database.
      */
@@ -233,7 +232,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         Log.v("CatalogActivity", rowsDeleted + " rows deleted from measurement database");
     }
 
-    //--------------------------------------------------------------------confirmation dialogs--------------------------------------------------------------------
+
+    //confirmation dialogs
     private void showDeleteConfirmationDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(R.string.delete_all_records_dialog_msg);
@@ -249,8 +249,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 }
             }
         });
-
-        // Create and show the AlertDialog
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
@@ -272,19 +270,18 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 }
             }
         });
-
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
 
 
-    private void showDownloadConfirmationDialog() {
+    private void showDownloadReplaceConfirmationDialog() {
         if (checkInternetConnection()) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setMessage(R.string.download_from_cloud_dialog_msg);
             builder.setPositiveButton(R.string.action_download_from_cloud, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
-                    downloadDatabaseFromCloud();
+                    replaceDatabaseFromCloud();
                 }
             });
             builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -294,21 +291,19 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                     }
                 }
             });
-
-            // Create and show the AlertDialog
             AlertDialog alertDialog = builder.create();
             alertDialog.show();
         }
     }
 
 
-    private void showUploadConfirmationDialog() {
+    private void showUploadReplaceConfirmationDialog() {
         if (checkInternetConnection()) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setMessage(R.string.upload_to_cloud_dialog_msg);
             builder.setPositiveButton(R.string.action_download_from_cloud, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
-                    uploadDatabaseToCloud();
+                    replaceDatabaseToCloud();
                 }
             });
             builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -318,18 +313,63 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                     }
                 }
             });
-
-            // Create and show the AlertDialog
             AlertDialog alertDialog = builder.create();
             alertDialog.show();
         }
     }
-    //--------------------------------------------------------------------end of confirmation dialogs-----------------------------------------------------------------
+
+
+    private void showUploadAttachConfirmationDialog(){
+        if (checkInternetConnection()) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage(R.string.attach_to_cloud_dialog_msg);
+            builder.setPositiveButton(R.string.action_download_from_cloud, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    attachDatabaseToCloud();
+                }
+            });
+            builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    if (dialog != null) {
+                        dialog.dismiss();
+                    }
+                }
+            });
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
+        }
+    }
+
+
+
+    private void showDownloadAttachConfirmationDialog(){
+        if (checkInternetConnection()) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage(R.string.attach_from_cloud_dialog_msg);
+            builder.setPositiveButton(R.string.action_download_from_cloud, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    attachDatabaseFromCloud();
+                }
+            });
+            builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    if (dialog != null) {
+                        dialog.dismiss();
+                    }
+                }
+            });
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
+        }
+    }//end of confirmation dialogs
+
+
 
     private void signUpOrSignIn() {
         Intent intent = new Intent(MainActivity.this, SignUpLogin.class);
         startActivity(intent);
     }
+
 
     private void signOut() {
         Toast.makeText(getApplicationContext(), mUser.getEmail() + " signed out successfully", Toast.LENGTH_LONG).show();
@@ -338,11 +378,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
 
-    //-----------------------------------------------setting up menu items-----------------------------------------------------
+    //setting up menu items
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu options from the res/menu/menu_main.xml file.
-        // This adds menu items to the app bar.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         disableSomeMenuItems(menu);
         return true;
@@ -365,23 +403,16 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             signIn.setEnabled(false);
             signOut.setEnabled(true);
         }
-
     }
-    //----------------------------------------------end of setting up menu items--------------------------------------------------
+    //end of setting up menu items
 
 
-    //---------------------------------------------------handle menu clicks-------------------------------------------------------
+    //handle menu clicks
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // User clicked on a menu option in the app bar overflow menu
         switch (item.getItemId()) {
-            // Respond to a click on the "Delete all entries" and "Sync Database to Cloud" menu option
             case R.id.action_delete_all_entries:
                 showDeleteConfirmationDialog();
-                return true;
-
-            case R.id.action_sync_record_to_cloud:
-                showUploadConfirmationDialog();
                 return true;
 
             case R.id.action_sign_in:
@@ -392,8 +423,20 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 signOut();
                 return true;
 
-            case R.id.action_sync_record_from_cloud:
-                showDownloadConfirmationDialog();
+            case R.id.action_download_replace:
+                showDownloadReplaceConfirmationDialog();
+                return true;
+
+            case R.id.action_upload_replace:
+                showUploadReplaceConfirmationDialog();
+                return true;
+
+            case R.id.action_upload_attach:
+                showUploadAttachConfirmationDialog();
+                return true;
+
+            case R.id.action_download_attach:
+                showDownloadAttachConfirmationDialog();
                 return true;
 
             case R.id.action_suggestion_or_complaints:
@@ -402,10 +445,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         }
         return super.onOptionsItemSelected(item);
     }
-    //-------------------------------------------------end of handle menu clicks---------------------------------------------------
+    //end of handle menu clicks
 
 
-    //-------------------------------------------------Everything that has to do with the Loader---------------------------------------------
+    //Everything that has to do with the Loader
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         String[] projection = {
@@ -413,7 +456,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 RecordEntry.COLUMN_CLIENT_NAME,
                 RecordEntry.COLUMN_CLIENT_GENDER
         };
-
         return new CursorLoader(this, RecordEntry.CONTENT_URI, projection, null, null, null);
     }
 
@@ -423,11 +465,13 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mCursorAdapter.swapCursor(data);
     }
 
+
+
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         mCursorAdapter.swapCursor(null);
     }
-    //-----------------------------------------end of everything that has to do with the loader------------------------------------------------
+    //end of everything that has to do with the loader
 
 
     @Override
@@ -436,6 +480,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mAuth.addAuthStateListener(mAuthListener);
     }
 
+
+
     @Override
     protected void onStop() {
         super.onStop();
@@ -443,6 +489,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             mAuth.removeAuthStateListener(mAuthListener);
         }
     }
+
+
 
     private int getCount() {
         SQLiteDatabase database = mDbHelper.getReadableDatabase();
@@ -453,8 +501,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         return count;
     }
 
-    private void uploadDatabaseToCloud() {
+
+
+    private void replaceDatabaseToCloud() {
         if (checkInternetConnection()) {
+            mProgress.setTitle("Uploading...");
             mProgress.show();
             SQLiteDatabase database = mDbHelper.getReadableDatabase();
             String allRecords = "SELECT * FROM records";
@@ -501,8 +552,61 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         }
     }
 
-    private void downloadDatabaseFromCloud() {
+    private void attachDatabaseToCloud(){
+        if(checkInternetConnection()){
+            mProgress.setTitle("Uploading...");
+            mProgress.show();
+            SQLiteDatabase database = mDbHelper.getReadableDatabase();
+            String allRecords = "SELECT * FROM records";
+            final Cursor cursor = database.rawQuery(allRecords, null);
+            ArrayList<Measurement> measurementArrayList = new ArrayList<>();
+            if (cursor.moveToFirst()) {
+                do {
+                    String name = cursor.getString(cursor.getColumnIndex(RecordEntry.COLUMN_CLIENT_NAME));
+                    int gender = cursor.getInt(cursor.getColumnIndex(RecordEntry.COLUMN_CLIENT_GENDER));
+                    float head = cursor.getFloat(cursor.getColumnIndex(RecordEntry.COLUMN_HEAD));
+                    float neck = cursor.getFloat(cursor.getColumnIndex(RecordEntry.COLUMN_NECK));
+                    float neckline = cursor.getFloat(cursor.getColumnIndex(RecordEntry.COLUMN_NECKLINE));
+                    float bustpoint = cursor.getFloat(cursor.getColumnIndex(RecordEntry.COLUMN_BUST_POINT));
+                    float underbust = cursor.getFloat(cursor.getColumnIndex(RecordEntry.COLUMN_UNDER_BUST));
+                    float bust = cursor.getFloat(cursor.getColumnIndex(RecordEntry.COLUMN_BUST));
+                    float waist = cursor.getFloat(cursor.getColumnIndex(RecordEntry.COLUMN_WAIST));
+                    float hip = cursor.getFloat(cursor.getColumnIndex(RecordEntry.COLUMN_HIP));
+                    float shoulder = cursor.getFloat(cursor.getColumnIndex(RecordEntry.COLUMN_SHOULDER));
+                    float chest = cursor.getFloat(cursor.getColumnIndex(RecordEntry.COLUMN_CHEST));
+                    float gownlength = cursor.getFloat(cursor.getColumnIndex(RecordEntry.COLUMN_GOWN_LENGTH));
+                    float blouselength = cursor.getFloat(cursor.getColumnIndex(RecordEntry.COLUMN_BLOUSE_LENGTH));
+                    float shortGownLength = cursor.getFloat(cursor.getColumnIndex(RecordEntry.COLUMN_SHORT_GOWN_LENGTH));
+                    float sleeveLength = cursor.getFloat(cursor.getColumnIndex(RecordEntry.COLUMN_SLEEVE_LENGTH));
+                    float armHole = cursor.getFloat(cursor.getColumnIndex(RecordEntry.COLUMN_ARMHOLE));
+                    float kneeLength = cursor.getFloat(cursor.getColumnIndex(RecordEntry.COLUMN_KNEE_LENGTH));
+                    float halfLength = cursor.getFloat(cursor.getColumnIndex(RecordEntry.COLUMN_HALF_LENGTH));
+                    float trouserLength = cursor.getFloat(cursor.getColumnIndex(RecordEntry.COLUMN_TROUSER_LENGTH));
+                    float thigh = cursor.getFloat(cursor.getColumnIndex(RecordEntry.COLUMN_THIGH));
+                    float trouserBottom = cursor.getFloat(cursor.getColumnIndex(RecordEntry.COLUMN_TROUSER_BOTTOM));
 
+
+                    Measurement measurement = new Measurement(name, gender, head, neck, neckline, bustpoint, underbust, bust, waist, hip,
+                            shoulder, chest, gownlength, blouselength, shortGownLength, sleeveLength, armHole, kneeLength, halfLength, trouserLength,
+                            thigh, trouserBottom);
+                    measurementArrayList.add(measurement);
+                } while (cursor.moveToNext());
+
+                int size = measurementArrayList.size();
+                mDatabaseReference = mDatabase.getReference("users/" + mUser.getUid());
+                for(int i = 0; i < size; i++){
+                    mDatabaseReference.child("measurement").push().setValue(measurementArrayList.get(i));
+                }
+                String record_or_records = measurementArrayList.size() > 1 ? " records to the cloud" : "record to cloud";
+                Toast.makeText(MainActivity.this, "Moved " + measurementArrayList.size() + record_or_records, Toast.LENGTH_SHORT).show();
+                mProgress.dismiss();
+            }
+        }
+    }
+
+
+
+    private void replaceDatabaseFromCloud() {
         mDatabaseReference = mDatabase.getReference("users/" + mUser.getUid());
         mDatabaseReference.child("measurement").addValueEventListener(new ValueEventListener() {
             @Override
@@ -546,7 +650,62 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                             Toast.makeText(MainActivity.this, getString(R.string.insert_successful), Toast.LENGTH_LONG).show();
                         }
                         count++;
-                        //Toast.makeText(MainActivity.this, String.valueOf(dataSnapshot.getChildrenCount()) + " " + measurement.name, Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(MainActivity.this, "Null Reference", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void attachDatabaseFromCloud(){
+        mDatabaseReference = mDatabase.getReference("users/" + mUser.getUid());
+        mDatabaseReference.child("measurement").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                if (dataSnapshot.exists()) {
+                    Toast.makeText(MainActivity.this, "True. It exists", Toast.LENGTH_SHORT).show();
+                    int count = 0;
+                    for (DataSnapshot dt : dataSnapshot.getChildren()) {
+                        Measurement measurement = dt.getValue(Measurement.class);
+                        ContentValues values = new ContentValues();
+
+                        values.put(RecordEntry.COLUMN_CLIENT_NAME, measurement.name);
+                        values.put(RecordEntry.COLUMN_CLIENT_GENDER, measurement.gender);
+                        values.put(RecordEntry.COLUMN_HEAD, measurement.head);
+                        values.put(RecordEntry.COLUMN_NECK, measurement.neck);
+                        values.put(RecordEntry.COLUMN_NECKLINE, measurement.neckline);
+                        values.put(RecordEntry.COLUMN_BUST_POINT, measurement.bustpoint);
+                        values.put(RecordEntry.COLUMN_UNDER_BUST, measurement.underbust);
+                        values.put(RecordEntry.COLUMN_BUST, measurement.bust);
+                        values.put(RecordEntry.COLUMN_WAIST, measurement.waist);
+                        values.put(RecordEntry.COLUMN_HIP, measurement.hip);
+                        values.put(RecordEntry.COLUMN_SHOULDER, measurement.shoulder);
+                        values.put(RecordEntry.COLUMN_CHEST, measurement.chest);
+                        values.put(RecordEntry.COLUMN_GOWN_LENGTH, measurement.gownlength);
+                        values.put(RecordEntry.COLUMN_BLOUSE_LENGTH, measurement.blouselength);
+                        values.put(RecordEntry.COLUMN_SHORT_GOWN_LENGTH, measurement.shortGownLength);
+                        values.put(RecordEntry.COLUMN_SLEEVE_LENGTH, measurement.sleeveLength);
+                        values.put(RecordEntry.COLUMN_ARMHOLE, measurement.armHole);
+                        values.put(RecordEntry.COLUMN_KNEE_LENGTH, measurement.kneeLength);
+                        values.put(RecordEntry.COLUMN_HALF_LENGTH, measurement.halfLength);
+                        values.put(RecordEntry.COLUMN_TROUSER_LENGTH, measurement.trouserLength);
+                        values.put(RecordEntry.COLUMN_THIGH, measurement.thigh);
+                        values.put(RecordEntry.COLUMN_TROUSER_BOTTOM, measurement.trouserBottom);
+
+                        Uri newUri = getContentResolver().insert(RecordEntry.CONTENT_URI, values);
+                        if (newUri == null) {
+                            Toast.makeText(MainActivity.this, getString(R.string.insert_fail), Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(MainActivity.this, getString(R.string.insert_successful), Toast.LENGTH_LONG).show();
+                        }
+                        count++;
                     }
                 } else {
                     Toast.makeText(MainActivity.this, "Null Reference", Toast.LENGTH_SHORT).show();
@@ -560,6 +719,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         });
 
     }
+
 
 
     private boolean checkInternetConnection() {
@@ -582,6 +742,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             return false;
         }
     }
+
+
 
     private void openComplaintSuggestion() {
         Intent intent = new Intent(getApplicationContext(), SuggestionComplaints.class);

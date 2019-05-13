@@ -24,12 +24,39 @@
     <item
         android:id="@+id/action_sync_record_to_cloud"
         android:title="@string/action_sync_record_to_cloud"
-        app:showAsAction="never" />
+        app:showAsAction="never">
+
+        <menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+            <item
+                android:id="@+id/action_upload_replace"
+                android:title="Replace cloud with local data" />
+
+            <item
+                android:id="@+id/action_upload_attach"
+                android:title="Attach local data to cloud" />
+
+        </menu>
+    </item>
 
     <item
         android:id="@+id/action_sync_record_from_cloud"
         android:title="@string/action_sync_record_from_cloud"
-        app:showAsAction="never" />
+        app:showAsAction="never">
+
+        <menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+        <item
+            android:id="@+id/action_download_replace"
+            android:title="Replace local and with cloud data" />
+
+            <item
+                android:id="@+id/action_download_attach"
+                android:title="Attach cloud data to local" />
+
+        </menu>
+
+    </item>
 
     <item
         android:id="@+id/action_sign_in"

@@ -8,12 +8,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.util.Log;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import owolabi.tobiloba.measurementrecorder.database.RecordContract.RecordEntry;
-import owolabi.tobiloba.measurementrecorder.model.Measurement;
 
 /**
  * Created by TOBILOBA on 10/10/2017.
@@ -165,9 +160,6 @@ public class RecordProvider extends ContentProvider {
             case RECORDS:
                 return updatePet(uri, contentValues, selection, selectionArgs);
             case RECORD_ID:
-                // For the PET_ID code, extract out the ID from the URI,
-                // so we know which row to update. Selection will be "_id=?" and selection
-                // arguments will be a String array containing the actual ID.
                 selection = RecordEntry._ID + "=?";
                 selectionArgs = new String[] { String.valueOf(ContentUris.parseId(uri)) };
                 return updatePet(uri, contentValues, selection, selectionArgs);

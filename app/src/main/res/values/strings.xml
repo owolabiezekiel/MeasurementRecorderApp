@@ -47,7 +47,13 @@
     <string name="download_from_cloud_dialog_msg">Are You Sure You Want Sync Measurement From Cloud? This will replace cloud measurements with the ones on your device</string>
 
     <!-- Dialog message to ask the user to confirm Syncing measurements from the cloud [CHAR LIMIT=NONE] -->
+    <string name="attach_from_cloud_dialog_msg">Are You Sure You Want Sync Measurement From Cloud? This will add cloud measurements to the ones on your device</string>
+
+    <!-- Dialog message to ask the user to confirm Syncing measurements from the cloud [CHAR LIMIT=NONE] -->
     <string name="upload_to_cloud_dialog_msg">This will replace previous cloud measurement with these new one. Are you sure you want to continue?</string>
+
+    <!-- Dialog message to ask the user to confirm Syncing measurements from the cloud [CHAR LIMIT=NONE] -->
+    <string name="attach_to_cloud_dialog_msg">This will add these new records to previous one on the cloud. Are you sure you want to continue?</string>
 
     <!-- Dialog message to ask the user to confirm Syncing measurements from the cloud [CHAR LIMIT=NONE] -->
     <string name="record_not_saved_dialog_msg">The name and title fields are empty, this record will not be saved. Would you like to keep editing or discard this record?</string>

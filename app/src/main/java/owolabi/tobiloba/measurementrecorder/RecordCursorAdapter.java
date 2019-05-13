@@ -2,7 +2,6 @@ package owolabi.tobiloba.measurementrecorder;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,8 +30,8 @@ public class RecordCursorAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         // Find individual views that we want to modify in the list item layout
-        TextView nameTextView = (TextView) view.findViewById(R.id.name);
-        ImageView displayImage = (ImageView) view.findViewById(R.id.image);
+        TextView nameTextView = view.findViewById(R.id.name);
+        ImageView displayImage = view.findViewById(R.id.image);
 
 
         // Find the columns of measurement attributes that we're interested in
@@ -47,7 +46,6 @@ public class RecordCursorAdapter extends CursorAdapter {
 
 
         //check the client gender and set the approriate image
-        // set to a question mark png if the gender is unknown
         if (clientGender == RecordEntry.GENDER_FEMALE){
             displayImage.setImageResource(R.drawable.family_mother);
         } else if (clientGender == RecordEntry.GENDER_UNKNOWN){
