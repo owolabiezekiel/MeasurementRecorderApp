@@ -28,21 +28,12 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/signUpTopAdView"
+        app:layout_constraintBottom_toTopOf="@+id/signUpBottomAdView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signUpBottomAdView" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.505" />
 
-    <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/signUpTopAdView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="8dp"
-        ads:adSize="BANNER"
-        ads:adUnitId="ca-app-pub-9965245858402334/1313334794"
-        ads:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="0dp"></com.google.android.gms.ads.AdView>
+
 
 </android.support.constraint.ConstraintLayout>

@@ -184,6 +184,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mInterstitialAd.setAdUnitId("ca-app-pub-9965245858402334/5663643347");
         mInterstitialAd.loadAd(new AdRequest.Builder().build());
 
+
         Intent intent = getIntent();
         mCurrentRecordUri = intent.getData();
         if (mCurrentRecordUri == null) {
@@ -539,6 +540,10 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 // Otherwise, the update was successful and we can display a toast.
                 Toast.makeText(this, getString(R.string.editor_update_record_successful),
                         Toast.LENGTH_SHORT).show();
+                if(mInterstitialAd.isLoaded()){
+                    mInterstitialAd.show();
+                }
+                finish();
             }
         }
     }
@@ -760,6 +765,9 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         // If the pet hasn't changed, continue with handling back button press
         if (!mRecordHasChanged) {
             super.onBackPressed();
+            if(mInterstitialAd.isLoaded()){
+                mInterstitialAd.show();
+            }
             return;
         }
 
@@ -770,6 +778,9 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         // User clicked "Discard" button, close the current activity.
+                        if(mInterstitialAd.isLoaded()){
+                            mInterstitialAd.show();
+                        }
                         finish();
                     }
                 };
