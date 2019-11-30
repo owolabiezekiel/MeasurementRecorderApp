@@ -29,6 +29,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -73,6 +75,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private InterstitialAd mInterstitialAd;
     private boolean flag = false;
 
+    private FloatingActionButton fab1_male, fab2_female, fab3_unisex;
+    private Animation fab_open, fab_close, fab_clock, fab_anticlock;
+    TextView textview_male, textview_female, textview_unisex;
+    Boolean isOpen = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,6 +106,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mProgress.setMessage("Signing in...");
         mProgress.setCancelable(false);
         mProgress.setIndeterminate(true);
+
 
 
         //Instantiate Firebase libraries needed
@@ -134,13 +142,72 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         };
 
 
+        fab1_male = findViewById(R.id.fab_male);
+        fab2_female = findViewById(R.id.fab_female);
+        fab3_unisex = findViewById(R.id.fab_unisex);
+        fab_close = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_close);
+        fab_open = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open);
+        fab_clock = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_rotate_clock);
+        fab_anticlock = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_rotate_anticlock);
+
+        textview_male = (TextView) findViewById(R.id.textview_male_measurement);
+        textview_female = (TextView) findViewById(R.id.textview_female_measurement);
+        textview_unisex = findViewById(R.id.textview_unisex_measurement);
+
         // Setup FAB to open EditorActivity
-        FloatingActionButton fab = findViewById(R.id.fab);
+        final FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, EditorActivity.class);
-                startActivity(intent);
+                if (isOpen) {
+
+                    textview_male.setVisibility(View.INVISIBLE);
+                    textview_female.setVisibility(View.INVISIBLE);
+                    textview_unisex.setVisibility(View.INVISIBLE);
+                    fab3_unisex.startAnimation(fab_close);
+                    fab2_female.startAnimation(fab_close);
+                    fab1_male.startAnimation(fab_close);
+                    fab.startAnimation(fab_anticlock);
+                    fab2_female.setClickable(false);
+                    fab1_male.setClickable(false);
+                    isOpen = false;
+                } else {
+                    textview_male.setVisibility(View.VISIBLE);
+                    textview_female.setVisibility(View.VISIBLE);
+                    textview_unisex.setVisibility(View.VISIBLE);
+                    fab3_unisex.startAnimation(fab_open);
+                    fab2_female.startAnimation(fab_open);
+                    fab1_male.startAnimation(fab_open);
+                    fab.startAnimation(fab_clock);
+                    fab2_female.setClickable(true);
+                    fab1_male.setClickable(true);
+                    isOpen = true;
+                }
+            }
+        });
+
+
+        fab2_female.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Toast.makeText(getApplicationContext(), "Share", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+        fab1_male.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getApplicationContext(), "Email", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+        fab3_unisex.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), EditorActivity.class));
             }
         });
 
